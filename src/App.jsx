@@ -98,7 +98,7 @@ const Hero = () => {
       {/* Background Visual - The Watershed Mountain Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="http://googleusercontent.com/image_generation_content/3"
+          src="/hero.png"
           alt="シックな雰囲気の分水嶺の夜明け"
           className="w-full h-full object-cover opacity-70"
         />
