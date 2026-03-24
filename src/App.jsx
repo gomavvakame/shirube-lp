@@ -9,12 +9,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;
-```
-
-2. ターミナルでいつもの3点セットを打って、本番へ反映させる。
-   ```powershell
-   git add.
-   git commit - m "chore: 一時的にComing Soon画面へ差し替え"
-   git push
