@@ -49,21 +49,24 @@ const Navigation = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
       <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className={`text-2xl font-serif font-medium tracking-widest z-50 transition-colors ${isMenuOpen ? 'text-stone-900' : 'text-stone-200 md:text-stone-800'} ${isScrolled ? 'text-stone-900' : ''}`}>
-          標 <span className="text-xs ml-2 tracking-wider font-sans opacity-60">SHIRUBE</span>
+        <a href="#" className={`text-4xl font-serif font-medium tracking-widest z-50 transition-colors ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>
+          標 <span className="text-sm ml-2 tracking-wider font-sans opacity-60">SHIRUBE</span>
         </a>
 
         {/* Desktop Menu */}
-        <div className={`hidden md:flex space-x-12 text-base tracking-widest font-light ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
-          {['概念', '過程', '想い', '対話'].map((item, index) => {
-            const hrefs = ['#concept', '#service', '#philosophy', '#contact'];
-            return (
-              <a key={index} href={hrefs[index]} className="hover:text-stone-900 transition-colors relative group">
-                {item}
-                <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}></span>
-              </a>
-            );
-          })}
+        <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
+          {[
+            { ja: '概念', en: 'Concept', href: '#concept' },
+            { ja: '過程', en: 'Process', href: '#service' },
+            { ja: '想い', en: 'Conviction', href: '#philosophy' },
+            { ja: '問合せ', en: 'Contact', href: '#contact' },
+          ].map((item, index) => (
+            <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
+              <span className="block text-lg tracking-widest">{item.ja}</span>
+              <span className="block text-[10px] tracking-[0.2em] uppercase opacity-60">{item.en}</span>
+              <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
+            </a>
+          ))}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -79,14 +82,17 @@ const Navigation = () => {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
       >
-        {['概念', '過程', '想い', '対話'].map((item, index) => {
-          const hrefs = ['#concept', '#service', '#philosophy', '#contact'];
-          return (
-            <a key={index} href={hrefs[index]} onClick={() => setIsMenuOpen(false)} className="text-2xl font-serif tracking-widest text-stone-800">
-              {item}
-            </a>
-          );
-        })}
+        {[
+          { ja: '概念', en: 'Concept', href: '#concept' },
+          { ja: '過程', en: 'Process', href: '#service' },
+          { ja: '想い', en: 'Conviction', href: '#philosophy' },
+          { ja: '問合せ', en: 'Contact', href: '#contact' },
+        ].map((item, index) => (
+          <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
+            <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
+            <span className="block text-xs tracking-[0.2em] uppercase text-stone-400">{item.en}</span>
+          </a>
+        ))}
       </motion.div>
     </nav>
   );
@@ -99,7 +105,7 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <img
           src="/hero.png"
-          alt="シックな雰囲気の分水嶺の夜明け"
+          alt="分水嶺の夜明け"
           className="w-full h-full object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-stone-900/50 to-[#FAFAF9]"></div>
@@ -126,7 +132,7 @@ const Hero = () => {
               Your Life Marker
             </h1>
             <div className="w-[1px] h-16 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
-            <p className="text-stone-200 font-light leading-relaxed text-base md:text-lg max-w-xs drop-shadow-md">
+            <p className="text-stone-200 leading-relaxed text-base md:text-lg max-w-xs drop-shadow-md">
               重なり合う決断の果てに<br />
               今、あなたが立つ場所。<br />
               その揺るぎない軌跡を映像に刻む。
@@ -157,7 +163,7 @@ const Concept = () => {
           <FadeIn className="w-full md:w-5/12 relative">
             <div className="aspect-[3/4] overflow-hidden rounded-sm relative group">
               <img
-                src="https://images.unsplash.com/photo-1505238680356-667803448bb6?q=80&w=2070&auto=format&fit=crop"
+                src="/concept.jpg"
                 alt="光と影"
                 className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
               />
@@ -165,8 +171,7 @@ const Concept = () => {
             </div>
             <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-white p-6 shadow-sm hidden md:flex items-center justify-center">
               <div className="text-center">
-                <p className="font-serif text-2xl text-stone-300">01</p>
-                <p className="text-xs tracking-widest text-stone-500 mt-1 uppercase">Concept</p>
+                <p className="text-sm tracking-widest text-stone-500 uppercase">Concept</p>
               </div>
             </div>
           </FadeIn>
@@ -175,10 +180,10 @@ const Concept = () => {
           <div className="w-full md:w-7/12 md:pt-20 md:pl-12">
             <FadeIn delay={0.2}>
               <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal">
-                流れる時間を、<br />
+                流れてゆく時間を、<br />
                 確かな道標へ。
               </h2>
-              <div className="space-y-8 text-stone-600 font-light leading-loose text-base md:text-lg text-justify">
+              <div className="space-y-8 text-stone-600 leading-loose text-base md:text-lg text-justify">
                 <p>
                   人は誰しも、語り尽くせぬ物語を抱えて生きています。<br />
                   日々の忙しさの中に埋もれてしまう、<br />
@@ -186,8 +191,8 @@ const Concept = () => {
                 </p>
                 <p>
                   「標（しるべ）」は、単なる記録映像ではありません。<br />
-                  それは、コーチングの対話を通じてあなたの内面深くに潜り、<br />
-                  本質的な「想い」を映像として結晶化させるプロセスです。
+                  それは、想いを引き出す対話メソッドを通じ、あなたの芯にある、<br />
+                  本質的な「想い」を、映像として結晶化させるプロセスです。
                 </p>
                 <p>
                   迷ったとき、立ち止まったとき。<br />
@@ -213,7 +218,7 @@ const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
       <h3 className="text-xl md:text-2xl font-serif mb-1">{title}</h3>
       <p className="text-xs text-stone-400 tracking-widest uppercase">{subtitle}</p>
     </div>
-    <p className="text-stone-600 font-light text-base leading-7">
+    <p className="text-stone-600 text-base leading-7">
       {description}
     </p>
   </div>
@@ -230,9 +235,9 @@ const Service = () => {
               想いを形にする旅路
             </h2>
           </div>
-          <p className="text-stone-500 text-base mt-6 md:mt-0 font-light max-w-md text-right md:text-left">
+          <p className="text-stone-500 text-base mt-6 md:mt-0 max-w-md text-right md:text-left">
             内面を掘り下げる対話から、映像としての昇華まで。<br />
-            一貫した美意識で伴走します。
+            標の一貫したコンセプトで、伴走します。
           </p>
         </FadeIn>
 
@@ -243,7 +248,7 @@ const Service = () => {
               title="対話と探索"
               subtitle="Dialogue"
               icon={Mic}
-              description="コーチングの手法を用いた深い対話を通じて、あなたの人生の核となる価値観や、映像に残すべき「想い」を言語化します。"
+              description="標では、「何かに導くような」インタビューはいたしません。あなたの情熱や信念の源を掘り下げ、そのコアの部分を引き出します。そうした対話を通じ、人生の核となる価値観や、映像に残すべき「想い」を言語化します。"
             />
           </FadeIn>
           <FadeIn delay={0.2} className="h-full">
@@ -252,7 +257,7 @@ const Service = () => {
               title="撮影と記録"
               subtitle="Shooting"
               icon={Camera}
-              description="那須の自然の中や、あなたの想い出の場所で。ドキュメンタリーのような自然な佇まいと、映画のような美しさで「今」を切り取ります。"
+              description="撮影は、想い出の場所でも、自宅でも、オフィスでも。大事なことは、あなたが100%、想いを語れる場所であること。ドキュメンタリーのような自然な佇まいと、映画のようなトーンで「今」を切り取ります。"
             />
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">
@@ -261,7 +266,7 @@ const Service = () => {
               title="編集と昇華"
               subtitle="Editing"
               icon={Film}
-              description="言葉、音、光を紡ぎ合わせ、あなたの人生の指針となるような映像作品へ。何度も見返したくなる、魂のショートフィルムを制作します。"
+              description="言葉や表情はもちろん、沈黙や間、音、光を紡ぎ合わせ、あなたの人生の指針となる映像へ。時が来るたびに見返したくなる、あなたの魂が込められたショートフィルムを制作します。"
             />
           </FadeIn>
         </div>
@@ -285,21 +290,21 @@ const Philosophy = () => {
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
               テクノロジーが進歩し、<br />
-              すべてが加速する時代だからこそ。<br />
-              立ち止まり、内なる声に耳を澄ませる時間を。
+              あらゆることがすごいスピードで進む時代だからこそ。<br />
+              立ち止まり、内なる声に耳を澄ます時間を。
             </h2>
-            <p className="text-stone-400 font-light leading-loose text-base md:text-lg mb-16">
-              私は映像作家として、またAI研究者として、<br />
+            <p className="text-stone-400 leading-loose text-base md:text-lg mb-16">
+              私は映像作家として、またITコンサルタントとして、<br />
               最先端と根源的な人間性の間を行き来してきました。<br />
-              そこで辿り着いたのは、「人の想いこそが、最強のアルゴリズムである」という真理。<br /><br />
+              そこで辿り着いたのは、「人の想い」こそが最強のアルゴリズムであるという気づき。<br /><br />
 
-              「標」は、私の映像技術とコーチングへの情熱を注ぎ込んだ、<br />
-              あなただけのためのプライベート・ドキュメンタリー制作サービスです。<br />
-              あなたの人生という唯一無二の物語に、美しい栞を挟ませてください。
+              「標」は、私の映像制作の信念と、世の中のコーチングへのアンチテーゼを込めた、<br />
+              あなただけのための「プライベート・ドキュメンタリー」制作サービスです。<br />
+              あなたの人生という唯一無二の物語を、あなただけのために。
             </p>
             <div className="text-right">
               <p className="font-serif text-lg tracking-widest">藤堂 八雲</p>
-              <p className="text-xs text-stone-500 tracking-wider mt-2 uppercase">Videoographer / Life Marker Founder</p>
+              <p className="text-xs text-stone-500 tracking-wider mt-2 uppercase">標師 / Your Life Marker Founder</p>
             </div>
           </FadeIn>
         </div>
@@ -315,13 +320,13 @@ const Contact = () => {
         <FadeIn>
           <div className="border border-stone-200 bg-white p-8 md:p-20 max-w-5xl mx-auto shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-6">
-              まずは、あなたの物語を聞かせてください。
+              あなたの物語を聞かせてください。
             </h2>
-            <p className="text-stone-500 font-light text-base md:text-lg mb-12">
+            <p className="text-stone-500 text-base md:text-lg mb-12">
               サービスに関するご質問、制作のご相談など、<br />
               お気軽にお問い合わせください。
             </p>
-            <a href="mailto:contact@shirube-life.com" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-sm group">
+            <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-sm group">
               <span className="tracking-widest text-sm">お問い合わせ</span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -344,7 +349,7 @@ const Footer = () => {
           <a href="#" className="hover:text-stone-600 transition-colors">Terms of Service</a>
         </div>
         <div className="mt-4 md:mt-0">
-          © 2026 Shirube Life Marker. <a href="https://www.yakumo-todo.com/" className="ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4">Producer: Yakumo Todo</a>
+          © 2026 Shirube Your Life Marker. <a href="https://www.yakumo-todo.com/" className="ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4">Producer: Yakumo Todo</a>
         </div>
       </div>
     </footer>

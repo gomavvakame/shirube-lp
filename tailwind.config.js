@@ -5,7 +5,12 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ['"Noto Sans JP"', 'sans-serif'],
+                serif: ['"Noto Serif JP"', 'serif'],
+            },
+        },
     },
     plugins: [],
 }
