@@ -5,13 +5,20 @@
             <stop offset="100%" stop-color="#F2994A" />
         </linearGradient>
     </defs>
-    <!-- 背景フレーム：那須の深い森 -->
+    <!-- 背景フレーム：那須の深い森（#1B4332） -->
     <rect width="512" height="512" rx="120" fill="#1B4332" />
-    <!-- センサー風ドット -->
-    <circle cx="64" cy="64" r="8" fill="white" fill-opacity="0.15" />
-    <circle cx="448" cy="64" r="8" fill="white" fill-opacity="0.15" />
-    <circle cx="64" cy="448" r="8" fill="white" fill-opacity="0.15" />
-    <circle cx="448" cy="448" r="8" fill="white" fill-opacity="0.15" />
-    <!-- 滑らかなひし形（Geminiスタイル） -->
-    <path d="M256 96 Q272 216 392 256 Q272 296 256 416 Q240 296 120 256 Q240 216 256 96 Z" fill="url(#shirube_grad)" />
+    
+    <!-- センサー風ドット（拡大したシンボルに合わせて配置を微調整） -->
+    <circle cx="52" cy="52" r="8" fill="white" fill-opacity="0.15" />
+    <circle cx="460" cy="52" r="8" fill="white" fill-opacity="0.15" />
+    <circle cx="52" cy="460" r="8" fill="white" fill-opacity="0.15" />
+    <circle cx="460" cy="460" r="8" fill="white" fill-opacity="0.15" />
+    
+    <!-- 30%拡大した滑らかなひし形（Geminiスタイル） -->
+    <!-- 
+        元のY座標: 96(Top) - 416(Bottom) = 320px
+        30%拡大後: 約416px幅
+        新座標計算: 中心256から上下に208pxずつ → 48(Top) - 464(Bottom)
+    -->
+    <path d="M256 48 Q276 200 433 256 Q276 312 256 464 Q236 312 79 256 Q236 200 256 48 Z" fill="url(#shirube_grad)" />
 </svg>
