@@ -206,8 +206,9 @@ const Concept = () => {
 };
 
 const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
-  <div className="group relative pt-8 border-t border-stone-200 hover:border-stone-400 transition-colors duration-500">
-    <div className="absolute top-0 right-0 text-6xl text-stone-100 font-serif -z-10 group-hover:text-stone-200 transition-colors">
+  <div className="group relative isolate pt-8">
+    <div className="absolute top-0 left-0 right-0 md:right-4 h-[1px] bg-stone-200 group-hover:bg-stone-400 transition-colors duration-500"></div>
+    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-200 font-serif -z-10 group-hover:text-stone-300 transition-colors">
       {number}
     </div>
     <div className="mb-6 text-stone-800">
@@ -282,8 +283,8 @@ const Philosophy = () => {
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto text-left">
           <FadeIn>
-            <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-12">
-              <p className="text-base tracking-widest text-stone-600 uppercase font-english">Philosophy</p>
+            <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12">
+              <p className="text-base tracking-widest text-stone-100 uppercase font-english">Philosophy</p>
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
               テクノロジーが進歩し、<br />
