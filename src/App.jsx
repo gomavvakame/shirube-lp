@@ -56,13 +56,13 @@ const Navigation = () => {
         {/* Desktop Menu */}
         <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
           {[
-            { ja: '概念', en: 'Concept', href: '#concept' },
-            { ja: '過程', en: 'Process', href: '#service' },
-            { ja: '想い', en: 'Conviction', href: '#philosophy' },
-            { ja: '問合せ', en: 'Contact', href: '#contact' },
+            { ja: 'コンセプト', en: 'Concept', href: '#concept' },
+            { ja: '工程', en: 'Process', href: '#service' },
+            { ja: 'フィロソフィー', en: 'philosophy', href: '#philosophy' },
+            { ja: 'お問合せ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
             <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
-              <span className="block text-lg tracking-widest">{item.ja}</span>
+              <span className="block text-base tracking-widest">{item.ja}</span>
               <span className="block text-[10px] tracking-[0.2em] uppercase opacity-60 font-english">{item.en}</span>
               <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
             </a>
@@ -111,7 +111,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-stone-900/50 to-[#FAFAF9]"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 h-full flex flex-col md:flex-row items-center justify-center md:justify-between pb-20 md:pb-0">
+      <div className="container mx-auto px-6 relative z-10 h-full flex flex-col md:flex-row items-center justify-center md:justify-between pt-36 md:pt-0 pb-20 md:pb-0">
 
         {/* Main Copy (Vertical Text) */}
         <div className="order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto md:pl-16">
@@ -129,9 +129,9 @@ const Hero = () => {
         <div className="order-1 md:order-2 flex-1 flex flex-col items-center md:items-end text-center md:text-right space-y-6">
           <FadeIn delay={0.6} direction="left">
             <h1 className="text-sm md:text-base tracking-[0.3em] uppercase text-stone-300 mb-4 drop-shadow-sm font-english">
-              Your Life Compass
+              Private Documentary
             </h1>
-            <div className="w-[1px] h-16 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
+            <div className="w-[1px] h-10 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
             <p className="text-stone-200 leading-relaxed text-base md:text-lg max-w-xs drop-shadow-md">
               迷いも、覚悟も、<br />
               まだ言葉にできない想いも。<br />
@@ -303,8 +303,8 @@ const Philosophy = () => {
               誰にも公開しない、あなたの人生の現在地を。
             </p>
             <div className="text-right">
-              <p className="font-serif text-lg tracking-widest">藤堂 八雲</p>
-              <p className="text-xs text-stone-500 tracking-wider mt-2"><span className="font-english">Your Life Compass, Founder</span></p>
+              <p className="font-serif text-xl tracking-widest">藤堂 八雲</p>
+              <p className="text-sm text-stone-300 tracking-wider mt-2"><span className="font-english">標師 / Your Life Compass Founder</span></p>
             </div>
           </FadeIn>
         </div>
@@ -340,12 +340,12 @@ const Contact = () => {
 const Footer = () => {
   return (
     <footer className="bg-[#FAFAF9] py-12 border-t border-stone-200">
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-stone-400 text-xs tracking-wider">
+      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-stone-400 text-sm tracking-wider">
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-4 md:mb-0 hover:text-stone-600 transition-colors cursor-pointer">
-          <span className="font-serif text-stone-600 text-sm mr-2">標</span> <span className="font-english">SHIRUBE</span>
+          <span className="font-serif text-stone-600 text-base mr-2">標</span> <span className="font-english">SHIRUBE</span>
         </a>
         <div className="mt-4 md:mt-0">
-          <span className="font-english">© 2026 Shirube Your Life Marker.</span> <a href="https://www.yakumo-todo.com/" className="ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Producer: Yakumo Todo</a>
+          <span className="font-english">© 2026 Shirube - Your Life Compass.</span> <a href="https://www.yakumo-todo.com/" className="ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Producer: Yakumo Todo</a>
         </div>
       </div>
     </footer>
