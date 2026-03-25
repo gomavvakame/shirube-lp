@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactGA from 'react-ga4';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Camera, Mic, ChevronDown, Menu, X, ArrowRight, Film } from 'lucide-react';
 
@@ -356,6 +357,29 @@ const Footer = () => {
 };
 
 const App = () => {
+  useEffect(() => {
+    const sectionIds = ['concept', 'service', 'philosophy', 'contact'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            ReactGA.event({
+              category: 'Section View',
+              action: 'viewed',
+              label: entry.target.id,
+            });
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="antialiased selection:bg-stone-200 selection:text-stone-900 text-stone-900 bg-[#FAFAF9] overflow-x-hidden">
       <style>{`
