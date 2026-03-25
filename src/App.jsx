@@ -111,10 +111,10 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-stone-900/50 to-[#FAFAF9]"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 h-full flex flex-col md:flex-row items-center justify-center md:justify-between pt-36 md:pt-0 pb-20 md:pb-0">
+      <div className="hero-content container mx-auto px-6 relative z-10 h-full flex flex-col md:flex-row items-center justify-center md:justify-between pt-36 md:pt-0 pb-20 md:pb-0">
 
         {/* Main Copy (Vertical Text) */}
-        <div className="order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto md:pl-16">
+        <div className="hero-vertical-text order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto md:pl-16">
           <div className="flex gap-4 md:gap-8 flex-row-reverse">
             <FadeIn delay={0.2} className="vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
               人生の岐路に、
@@ -391,6 +391,33 @@ const App = () => {
                 }
                 ::-webkit-scrollbar-thumb:hover {
                     background: #A8A29E;
+                }
+                @media (orientation: landscape) and (max-width: 767px) {
+                    .hero-content {
+                        flex-direction: row !important;
+                        align-items: flex-start !important;
+                        justify-content: space-between !important;
+                        padding-top: 5rem !important;
+                        padding-bottom: 1rem !important;
+                    }
+                    .hero-vertical-text {
+                        min-height: 0 !important;
+                        margin-top: 0 !important;
+                        padding-left: 2rem;
+                        overflow: hidden;
+                        max-height: calc(100vh - 6rem);
+                        order: 1 !important;
+                    }
+                    .hero-vertical-text .vertical-text {
+                        font-size: 1.5rem !important;
+                        leading: 1.5 !important;
+                    }
+                    .hero-vertical-text .flex {
+                        gap: 0.5rem !important;
+                    }
+                    .hero-vertical-text .mt-16 {
+                        margin-top: 2rem !important;
+                    }
                 }
             `}</style>
       <Navigation />
