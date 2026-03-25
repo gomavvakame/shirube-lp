@@ -1,0 +1,11 @@
+{
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.shirube.yakumo-todo.com" }],
+      "destination": "https://shirube.yakumo-todo.com/:path*",
+      "permanent": true
+    }
+  ]
+}

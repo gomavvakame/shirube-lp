@@ -165,6 +165,7 @@ const Concept = () => {
             <img
               src="/concept.jpg"
               alt="光と影"
+              loading="lazy"
               className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-stone-900/10"></div>
@@ -356,8 +357,6 @@ const App = () => {
   return (
     <div className="antialiased selection:bg-stone-200 selection:text-stone-900 text-stone-900 bg-[#FAFAF9] overflow-x-hidden">
       <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Shippori+Mincho:wght@400;500;600&family=Noto+Serif+JP:wght@300;400;500&display=swap');
-
                 body {
                     font-family: 'Noto Serif JP', serif;
                     font-weight: 300;
