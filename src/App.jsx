@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { Camera, Mic, PenTool, ChevronDown, Menu, X, ArrowRight, Play, Film } from 'lucide-react';
+import { Camera, Mic, ChevronDown, Menu, X, ArrowRight, Film } from 'lucide-react';
 
 // Custom Hook for Fade In Animation
 const FadeIn = ({ children, delay = 0, direction = 'up', className = "" }) => {
@@ -170,17 +170,15 @@ const Concept = () => {
             />
             <div className="absolute inset-0 bg-stone-900/10"></div>
           </div>
-          <div className="absolute -top-8 -left-8 w-40 h-40 bg-white p-6 shadow-sm flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-sm tracking-widest text-stone-500 uppercase font-english">Concept</p>
-            </div>
+          <div className="absolute -bottom-8 -right-8 md:-top-8 md:bottom-auto md:-left-8 md:right-auto w-[200px] h-[85px] bg-[#E8E4DF] p-6 flex items-center justify-center">
+            <p className="text-base tracking-widest text-stone-600 uppercase font-english">Concept</p>
           </div>
         </FadeIn>
 
         {/* Text */}
         <FadeIn delay={0.2} className="max-w-[680px] mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal text-center">
-            流れゆく時間の中に、標を。
+          <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal text-left">
+            流れゆく時間の中に、<br />標を。
           </h2>
           <div className="space-y-8 text-stone-600 leading-loose text-base md:text-lg">
             <p>
@@ -227,8 +225,10 @@ const Service = () => {
   return (
     <section id="service" className="py-[100px] md:py-[160px] bg-white">
       <div className="container mx-auto px-6 md:px-12">
-        <FadeIn className="mb-24 md:mb-32">
-          <span className="text-xs tracking-[0.2em] text-stone-400 uppercase block mb-4 font-english">Process</span>
+        <FadeIn className="mb-24 md:mb-32 relative">
+          <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
+            <p className="text-base tracking-widest text-stone-600 uppercase font-english">Process</p>
+          </div>
           <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
             あなたの「今」が映像になるまで
           </h2>
@@ -282,8 +282,8 @@ const Philosophy = () => {
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto text-left">
           <FadeIn>
-            <div className="w-12 h-12 border border-stone-700 rounded-full flex items-center justify-center mb-12">
-              <PenTool size={16} className="text-stone-400" />
+            <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-12">
+              <p className="text-base tracking-widest text-stone-600 uppercase font-english">Philosophy</p>
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
               テクノロジーが進歩し、<br />
@@ -345,8 +345,9 @@ const Footer = () => {
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-4 md:mb-0 hover:text-stone-600 transition-colors cursor-pointer">
           <span className="font-serif text-stone-600 text-base mr-2">標</span> <span className="font-english">SHIRUBE</span>
         </a>
-        <div className="mt-4 md:mt-0">
-          <span className="font-english">© 2026 Shirube - Your Life Compass.</span> <a href="https://www.yakumo-todo.com/" className="ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Producer: Yakumo Todo</a>
+        <div className="mt-4 md:mt-0 flex flex-col md:flex-row items-center gap-2 md:gap-0">
+          <span className="font-english">© 2026 Shirube - Your Life Compass.</span>
+          <a href="https://www.yakumo-todo.com/" className="md:ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Producer: Yakumo Todo</a>
         </div>
       </div>
     </footer>
