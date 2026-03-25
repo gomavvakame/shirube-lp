@@ -117,10 +117,10 @@ const Hero = () => {
         <div className="order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto">
           <div className="flex gap-8 md:gap-16 flex-row-reverse">
             <FadeIn delay={0.2} className="vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
-              人生の分水嶺に、
+              人生の岐路に、
             </FadeIn>
             <FadeIn delay={0.4} className="vertical-text text-4xl md:text-6xl font-serif text-stone-200 leading-loose whitespace-nowrap mt-16 md:mt-32 drop-shadow-md">
-              確かなる標を。
+              一本の標を。
             </FadeIn>
           </div>
         </div>
@@ -133,9 +133,9 @@ const Hero = () => {
             </h1>
             <div className="w-[1px] h-16 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
             <p className="text-stone-200 leading-relaxed text-base md:text-lg max-w-xs drop-shadow-md">
-              重なり合う決断の果てに<br />
-              今、あなたが立つ場所。<br />
-              その揺るぎない軌跡を映像に刻む。
+              迷いも、覚悟も、<br />
+              まだ言葉にできない想いも。<br />
+              今あなたが立っている、その場所を映す。
             </p>
           </FadeIn>
         </div>
@@ -180,31 +180,32 @@ const Concept = () => {
           <div className="w-full md:w-7/12 md:pt-20 md:pl-12">
             <FadeIn delay={0.2}>
               <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal">
-                流れてゆく時間を、<br />
-                確かな道標へ。
+                流れゆく時間の中に、標を。
               </h2>
               <div className="space-y-8 text-stone-600 leading-loose text-base md:text-lg text-justify">
                 <p>
-                  人は誰しも、語り尽くせぬ物語を抱えて生きています。<br />
-                  日々の忙しさの中に埋もれてしまう、<br />
-                  あなたの決断、葛藤、そして希望。
+                  日々の忙しさの中で、<br />
+                  自分自身と向き合う時間は、どれくらいあるだろう。<br />
                 </p>
                 <p>
-                  「標（しるべ）」は、単なる記録映像ではありません。<br />
-                  それは、想いを引き出す対話メソッドを通じ、あなたの芯にある、<br />
-                  本質的な「想い」を、映像として結晶化させるプロセスです。
+                  考えているつもりで、まだ言葉にしていないこと。<br />
+                  分かっているつもりで、まだ見えていないもの。<br />
                 </p>
                 <p>
-                  迷ったとき、立ち止まったとき。<br />
-                  この映像が、あなたの原点に立ち返るための<br />
-                  静かな灯火となりますように。
+                  「標」は、あなたの今を、そのまま映像に残します。<br />
+                  引き出さない。整えない。結論を作らない。<br />
+                  迷いも、沈黙も、まだ揺れている言葉も、そのままに。<br />
+                </p>
+                <p>
+                  5年後、10年後。<br />
+                  ふと立ち止まったとき、あの日の自分に会える場所を。
                 </p>
               </div>
             </FadeIn>
           </div>
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
@@ -290,17 +291,21 @@ const Philosophy = () => {
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
               テクノロジーが進歩し、<br />
-              あらゆることがすごいスピードで進む時代だからこそ。<br />
-              立ち止まり、内なる声に耳を澄ます時間を。
+              あらゆることが加速していく時代だからこそ。<br />
+              立ち止まり、自分の声に耳を澄ます時間がいる。
             </h2>
             <p className="text-stone-400 leading-loose text-base md:text-lg mb-16">
-              私はITコンサルタントとして、そして映像作家として、<br />
-              「最先端」と「根源的な人間性」の間を行き来してきました。<br />
-              そこで辿り着いたのは、「人の想い」こそが最強のアルゴリズムであるという気づきです。<br /><br />
+              私は長く「最先端」と「人間の根源的なもの」の間を行き来してきました。<br />
+              その結果、辿り着いたのは、とてもシンプルなことでした。<br /><br />
 
-              「標」は、私の映像制作の信念と、世の中のコーチングへのアンチテーゼを込めた、<br />
-              あなただけのための「プライベート・ドキュメンタリー」制作サービスです。<br />
-              あなたの人生という唯一無二の物語を、あなただけのために。
+              人は自分の言葉を聞いたことがないということ。<br /><br />
+              考えているつもりでも、考えていない。<br />
+              わかっているつもりでも、見えていない。<br />
+              語れるつもりでも、まだ声にしていない。<br /><br />
+
+              「標」は、あなたの今をそのまま映す、プライベート・ドキュメンタリーです。<br />
+              「何かを変えるため」ではなく、「ただ見るため」に。<br />
+              誰にも公開しない、あなたの人生の現在地を。
             </p>
             <div className="text-right">
               <p className="font-serif text-lg tracking-widest">藤堂 八雲</p>
