@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactGA from 'react-ga4';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Camera, Mic, ChevronDown, Menu, X, ArrowRight, Film } from 'lucide-react';
 
 // Custom Hook for Fade In Animation
@@ -316,6 +316,175 @@ const Philosophy = () => {
   );
 };
 
+const voicesData = [
+  {
+    id: 1,
+    attribute: '30代・女性・スタートアップ創業2年目',
+    hook: 'その沈黙の時間が\n一番よかった。',
+    image: '/images/voice-startup.jpg',
+    body: [
+      '起業してから1年間ずっと突っ走ってきて、「なんで始めたんだっけ？」って思う瞬間が増えてた。\n事業計画書を見返すことばかりで、そこにあるのは数字だけ。もちろん起業したときの温度感はそこにはない。',
+      '撮影は、思ってたのと全然違った。\n聞かれる質問が、ビジネスの話じゃなかった。「最近、何してるときに一番静かな気持ちになりますか」とか、「この仕事を続けていて、一番怖いことは何ですか」とか。',
+      '途中、少し黙ってしまった場面があって、「すみません、うまく言えなくて」と言ったら、「それもそのまま残しますね」と言われた。',
+      'あとで映像を観たとき、その沈黙の時間が一番よかった。自分がこんな顔するんだって初めて知った。',
+      'これは誰かに見せるためのものじゃない。\n未来の自分が、原点に戻れるための映像。そう思ったら、急にこの映像がすごく大事なものに感じられた。',
+    ],
+  },
+  {
+    id: 2,
+    attribute: '50代・男性・上場企業の役員就任直後',
+    hook: '自分のことなのに、\n他人を見てるみたい。\nそう思った。',
+    image: '/images/voice-executive.jpg',
+    body: [
+      '役員になったとき、周囲のみんなは「おめでとう」と言ってくれた。\nでも自分の中にあったのは、達成感よりも「ここから先、自分はどう在りたいんだろう」という自分への問いだった。誰にも言えなかった。言ったら弱く見えると思ったから。',
+      '何かを教えてもらえるわけでもない。アドバイスもない。ただ、自分が話して、それがそのまま映像になる。',
+      '正直、撮影しているときは物足りなかった。\nでも、納品されたUSBを自宅で観たとき、自分の声が静かに流れてきて、画面の中の自分が、少し目を伏せている場面があって、そこで気づいた。',
+      'ああ、この人は迷ってるんだな、と。自分のことなのに、他人を見るみたいにそう思った。',
+      'あの映像は今、書斎の引き出しにしまってある。たぶん任期満了を迎えたときに、もう一度観ると思う。',
+    ],
+  },
+  {
+    id: 3,
+    attribute: '30代・女性・結婚を控えたタイミングで',
+    hook: '飾ってない自分。',
+    image: '/images/voice-marriage.jpg',
+    body: [
+      '結婚式の映像は、もちろん撮る予定だった。\nでも「標」はそれとは違う。\n「今の自分」を残すものです、と言われて、最初はピンとこなかった。',
+      'でもカメラの前で聞かれたのは、結婚のことじゃなかった。\n「今、この瞬間で一番大切にしていることは？」「5年前の自分に会えたら、何て言いますか？」',
+      '話しているうちに、結婚するということが、自分の人生の中でどういう位置にあるのかが、なんとなく見えてきた気がした。',
+      '結婚式の映像は「あの日」の記録。\nでもこの映像は、あの日を迎える前の「私そのもの」の記録。まだ何も始まっていない、期待と不安が混ざったままの、飾ってない自分。',
+      '10年後、この映像を観て泣くかもしれないし、笑うかもしれない。今はどっちかわからないけど、残しておいてよかったって思う気がする。',
+    ],
+  },
+  {
+    id: 4,
+    attribute: '50代・男性・人気四川料理店オーナーシェフ',
+    hook: '全部、「人」の話に\nなっていた。',
+    image: '/images/voice-chef.jpg',
+    body: [
+      '料理人って、自分のことを語る機会がほとんどない。',
+      '毎日厨房に立って、仕入れて、仕込んで、お客さんに提供して。その繰り返しの日々の中に自分の全部がある。でもそれを誰かにちゃんと話したことがあるかって言われたら、なかった。',
+      'カメラの前に座ったとき、最初は何を話せばいいかわからなかった。\nでも不思議なもので、話し始めたら止まらなかった。\nなんでこの道に進んだのか、四川で勉強しているときに何を感じていたのか、一人で追求することの苦悩やをどこで感じたのか。普段、お客さんにも、スタッフにも、家族にも話さないようなことが、するすると出てきた。',
+      '自分でも驚いたのは、料理の話をしているつもりなのに、結局ぜんぶ「人」の話になっていたこと。共に食材を探求する友人との関係、一緒に働く仲間、家族との時間。追いかけているものは料理なんだけど、その根っこにはいつも誰かがいたんだなと。それを、自分の声で、自分の言葉で聞いたのは初めてだった。',
+      '撮影が終わって「どうでしたか」と聞かれたとき、うまく言えなかったけど、すごくよかった。何がよかったのか、正直まだ言葉にできない。ただ、自分が何を大事にして生きてきたのかが、映像の中にはちゃんとあった。それだけで十分だった。',
+    ],
+  },
+];
+
+const VoiceModal = ({ voice, onClose }) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="relative bg-white max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 md:p-12 rounded-sm"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-2"
+          aria-label="閉じる"
+        >
+          <X size={20} />
+        </button>
+        <p className="text-xs text-stone-400 tracking-wide mb-6">{voice.attribute}</p>
+        <div className="space-y-6 text-base md:text-lg leading-loose font-light text-gray-700">
+          {voice.body.map((paragraph, i) => (
+            <p key={i} className="whitespace-pre-line">{paragraph}</p>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const VoiceCard = ({ voice, onClick }) => (
+  <button
+    onClick={onClick}
+    className="relative overflow-hidden rounded-lg w-72 md:w-80 h-64 flex-shrink-0 cursor-pointer group scroll-snap-align-start focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400"
+    style={{ scrollSnapAlign: 'start' }}
+  >
+    <img
+      src={voice.image}
+      alt=""
+      loading="lazy"
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/25 transition-colors duration-300" />
+    <div className="relative z-10 flex flex-col justify-between h-full p-6 md:p-8 text-left">
+      <div className="pt-2">
+        <p className="text-xs text-white/70 tracking-wide mb-2">{voice.attribute}</p>
+        <p className="text-lg md:text-xl font-light text-white leading-relaxed whitespace-pre-line">{voice.hook}</p>
+      </div>
+      <p className="text-xs text-white/50 self-end">読む →</p>
+    </div>
+  </button>
+);
+
+const Voices = () => {
+  const [activeVoice, setActiveVoice] = useState(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+
+  const handleClose = useCallback(() => setActiveVoice(null), []);
+
+  return (
+    <>
+      <section id="voices" ref={sectionRef} className="py-20 md:py-28 bg-gray-50">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div
+            className="voices-scroll flex gap-6 overflow-x-auto px-6 md:px-12 pb-4 md:justify-center"
+            style={{
+              scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch',
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {voicesData.map((voice) => (
+              <VoiceCard
+                key={voice.id}
+                voice={voice}
+                onClick={() => setActiveVoice(voice)}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      <AnimatePresence>
+        {activeVoice && (
+          <VoiceModal voice={activeVoice} onClose={handleClose} />
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
 const Contact = () => {
   return (
     <section id="contact" className="py-[100px] md:py-[160px] bg-[#FAFAF9]">
@@ -323,11 +492,11 @@ const Contact = () => {
         <FadeIn>
           <div className="border border-stone-200 bg-white p-8 md:p-20 max-w-5xl mx-auto shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-6">
-              まずはお話しませんか。
+              その眼差しが、鮮明なうちに。
             </h2>
             <p className="text-stone-500 text-base md:text-lg mb-12">
-              サービスに関するご質問、制作のご相談など、<br />
-              お気軽にお問い合わせください。
+              撮影のご相談、ご質問などは、<br />
+              こちらからお問い合わせください。
             </p>
             <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-sm group">
               <span className="tracking-widest text-sm">お問い合わせ</span>
@@ -358,7 +527,7 @@ const Footer = () => {
 
 const App = () => {
   useEffect(() => {
-    const sectionIds = ['concept', 'service', 'philosophy', 'contact'];
+    const sectionIds = ['concept', 'service', 'philosophy', 'voices', 'contact'];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -417,6 +586,9 @@ const App = () => {
                 ::-webkit-scrollbar-thumb:hover {
                     background: #A8A29E;
                 }
+                .voices-scroll::-webkit-scrollbar {
+                    display: none;
+                }
                 @media (orientation: landscape) and (max-width: 767px) {
                     .hero-content {
                         flex-direction: row !important;
@@ -450,6 +622,7 @@ const App = () => {
       <Concept />
       <Service />
       <Philosophy />
+      <Voices />
       <Contact />
       <Footer />
     </div>
