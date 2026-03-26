@@ -59,8 +59,8 @@ const Navigation = () => {
           {[
             { ja: 'コンセプト', en: 'Concept', href: '#concept' },
             { ja: '工程', en: 'Process', href: '#service' },
-            { ja: 'フィロソフィー', en: 'philosophy', href: '#philosophy' },
-            { ja: 'お問合せ', en: 'Contact', href: '#contact' },
+            { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
+            { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
             <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
               <span className="block text-base tracking-widest">{item.ja}</span>
@@ -84,10 +84,10 @@ const Navigation = () => {
         className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
       >
         {[
-          { ja: '概念', en: 'Concept', href: '#concept' },
-          { ja: '過程', en: 'Process', href: '#service' },
-          { ja: '想い', en: 'Conviction', href: '#philosophy' },
-          { ja: '問合せ', en: 'Contact', href: '#contact' },
+          { ja: 'コンセプト', en: 'Concept', href: '#concept' },
+          { ja: '工程', en: 'Process', href: '#service' },
+          { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
+          { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
         ].map((item, index) => (
           <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
             <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
@@ -456,6 +456,14 @@ const Voices = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
+          <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-20">
+            <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
+              <p className="text-base tracking-widest text-stone-600 uppercase font-english">Impressions</p>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
+              自分を見つめた人たちの、それぞれの言葉。
+            </h2>
+          </div>
           <div
             className="voices-scroll flex gap-6 overflow-x-auto px-6 md:px-12 pb-4 md:justify-center"
             style={{
