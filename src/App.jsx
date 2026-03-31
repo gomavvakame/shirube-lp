@@ -63,8 +63,8 @@ const Navigation = () => {
             { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
             <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
-              <span className="block text-base tracking-widest">{item.ja}</span>
-              <span className="block text-[10px] tracking-[0.2em] uppercase opacity-60 font-english">{item.en}</span>
+              <span className="block text-xl tracking-widest">{item.ja}</span>
+              <span className="block text-base tracking-[0.2em] opacity-60 font-english">{item.en}</span>
               <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
             </a>
           ))}
@@ -90,8 +90,8 @@ const Navigation = () => {
           { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
         ].map((item, index) => (
           <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
-            <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
-            <span className="block text-xs tracking-[0.2em] uppercase text-stone-400 font-english">{item.en}</span>
+            <span className="block text-4xl font-serif tracking-widest text-stone-800">{item.ja}</span>
+            <span className="block text-lg tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
           </a>
         ))}
       </motion.div>
@@ -129,7 +129,7 @@ const Hero = () => {
         {/* Sub Copy & English */}
         <div className="order-1 md:order-2 flex-1 flex flex-col items-center md:items-end text-center md:text-right space-y-6">
           <FadeIn delay={0.6} direction="left">
-            <h1 className="text-sm md:text-base tracking-[0.3em] uppercase text-stone-300 mb-4 drop-shadow-sm font-english">
+            <h1 className="text-sm md:text-base tracking-[0.3em] text-stone-300 mb-4 drop-shadow-sm font-english">
               Private Documentary
             </h1>
             <div className="w-[1px] h-10 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
@@ -149,7 +149,7 @@ const Hero = () => {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
       >
-        <span className="text-[10px] tracking-widest uppercase text-stone-400 font-english">Scroll</span>
+        <span className="text-xs tracking-widest text-stone-400 font-english">Scroll</span>
         <ChevronDown className="text-stone-400 animate-bounce" size={20} />
       </motion.div>
     </section>
@@ -172,7 +172,7 @@ const Concept = () => {
             <div className="absolute inset-0 bg-stone-900/10"></div>
           </div>
           <div className="absolute -bottom-8 -right-8 md:-top-8 md:bottom-auto md:-left-8 md:right-auto w-[200px] h-[85px] bg-[#E8E4DF] p-6 flex items-center justify-center">
-            <p className="text-base tracking-widest text-stone-600 uppercase font-english">Concept</p>
+            <p className="text-base tracking-widest text-stone-600 font-english">Concept</p>
           </div>
         </FadeIn>
 
@@ -215,7 +215,7 @@ const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
     <div className="mb-6 text-stone-800">
       <Icon strokeWidth={1} size={32} className="mb-4 text-stone-400 group-hover:text-stone-600 transition-colors" />
       <h3 className="text-xl md:text-2xl font-serif mb-1">{title}</h3>
-      <p className="text-xs text-stone-400 tracking-widest uppercase font-english">{subtitle}</p>
+      <p className="text-xs text-stone-400 tracking-widest font-english">{subtitle}</p>
     </div>
     <p className="text-stone-600 text-base leading-7">
       {description}
@@ -229,7 +229,7 @@ const Service = () => {
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn className="mb-24 md:mb-32 relative">
           <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
-            <p className="text-base tracking-widest text-stone-600 uppercase font-english">Process</p>
+            <p className="text-base tracking-widest text-stone-600 font-english">Process</p>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
             あなたの「今」が映像になるまで
@@ -285,7 +285,7 @@ const Philosophy = () => {
         <div className="max-w-4xl mx-auto text-left">
           <FadeIn>
             <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12">
-              <p className="text-base tracking-widest text-stone-100 uppercase font-english">Philosophy</p>
+              <p className="text-base tracking-widest text-stone-100 font-english">Philosophy</p>
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
               テクノロジーが進歩し、<br />
@@ -458,7 +458,7 @@ const Voices = () => {
         >
           <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-20">
             <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
-              <p className="text-base tracking-widest text-stone-600 uppercase font-english">Impressions</p>
+              <p className="text-base tracking-widest text-stone-600 font-english">Impressions</p>
             </div>
             <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
               自分を見つめた人たちの、それぞれの言葉。
@@ -525,8 +525,8 @@ const Footer = () => {
           <span className="font-serif text-stone-600 text-base mr-2">標</span> <span className="font-english">SHIRUBE</span>
         </a>
         <div className="mt-4 md:mt-0 flex flex-col md:flex-row items-center gap-2 md:gap-0">
-          <span className="font-english">© 2026 Shirube - Your Life Compass.</span>
-          <a href="https://www.yakumo-todo.com/" className="md:ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Producer: Yakumo Todo</a>
+          <span className="font-english">© 2026 SHIRUBE - Your Life Compass.</span>
+          <a href="https://www.yakumo-todo.com/" className="md:ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Produced by Yakumo Todo, TY Creative Office</a>
         </div>
       </div>
     </footer>
