@@ -63,8 +63,8 @@ const Navigation = () => {
             { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
             <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
-              <span className="block text-xl tracking-widest">{item.ja}</span>
-              <span className="block text-base tracking-[0.2em] opacity-60 font-english">{item.en}</span>
+              <span className="block text-base tracking-widest">{item.ja}</span>
+              <span className="block text-sm tracking-[0.2em] opacity-60 font-english">{item.en}</span>
               <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
             </a>
           ))}
@@ -90,8 +90,8 @@ const Navigation = () => {
           { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
         ].map((item, index) => (
           <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
-            <span className="block text-4xl font-serif tracking-widest text-stone-800">{item.ja}</span>
-            <span className="block text-lg tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
+            <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
+            <span className="block text-base tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
           </a>
         ))}
       </motion.div>
@@ -129,8 +129,8 @@ const Hero = () => {
         {/* Sub Copy & English */}
         <div className="order-1 md:order-2 flex-1 flex flex-col items-center md:items-end text-center md:text-right space-y-6">
           <FadeIn delay={0.6} direction="left">
-            <h1 className="text-sm md:text-base tracking-[0.3em] text-stone-300 mb-4 drop-shadow-sm font-english">
-              Private Documentary
+            <h1 className="text-sm md:text-base tracking-[0.3em] text-stone-200 mb-4 drop-shadow-sm font-english">
+              Private Documentary Service
             </h1>
             <div className="w-[1px] h-10 bg-stone-400 mx-auto md:mx-0 md:ml-auto mb-6"></div>
             <p className="text-stone-200 leading-relaxed text-base md:text-lg max-w-xs drop-shadow-md">
@@ -156,9 +156,28 @@ const Hero = () => {
   );
 };
 
+const Director = () => {
+  return (
+    <section className="py-[100px] md:py-[160px] bg-white">
+      <div className="container mx-auto px-6 md:px-12">
+        <FadeIn className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl md:text-5xl font-serif font-light tracking-tight text-stone-900 mb-8">
+            監督は、あなた自身。
+          </h2>
+          <p className="text-base text-stone-500 leading-loose text-left md:text-center">
+            何を話すか、何を見せるか、沈黙するか、言い淀むか。<br />
+            すべてを決めるのは、カメラの前にいるあなた自身。<br />
+            標が用意するのは、あなたが最高の監督になれる場所。
+          </p>
+        </FadeIn>
+      </div>
+    </section>
+  );
+};
+
 const Concept = () => {
   return (
-    <section id="concept" className="py-[100px] md:py-[160px] bg-[#FAFAF9] relative">
+    <section id="concept" className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9] relative">
       <div className="container mx-auto px-6 md:px-12">
         {/* Image */}
         <FadeIn className="max-w-[800px] mx-auto relative mb-16 md:mb-20">
@@ -171,17 +190,17 @@ const Concept = () => {
             />
             <div className="absolute inset-0 bg-stone-900/10"></div>
           </div>
-          <div className="absolute -bottom-8 -right-8 md:-top-8 md:bottom-auto md:-left-8 md:right-auto w-[200px] h-[85px] bg-[#E8E4DF] p-6 flex items-center justify-center">
-            <p className="text-base tracking-widest text-stone-600 font-english">Concept</p>
+          <div className="absolute -bottom-8 -right-8 md:-top-8 md:bottom-auto md:-left-8 md:right-auto w-[200px] h-[85px] bg-[#A8A29E] p-6 flex items-center justify-center">
+            <p className="text-base tracking-widest text-stone-100 font-english">Concept</p>
           </div>
         </FadeIn>
 
         {/* Text */}
         <FadeIn delay={0.2} className="max-w-[680px] mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal text-left">
+          <h2 className="text-3xl md:text-4xl font-serif text-stone-200 mb-12 leading-normal text-left">
             流れゆく時間の中に、<br />標を。
           </h2>
-          <div className="space-y-8 text-stone-600 leading-loose text-base md:text-lg">
+          <div className="space-y-8 text-stone-400 leading-loose text-base md:text-lg">
             <p>
               日々の忙しさの中で、<br />
               自分自身と向き合う時間は、どれくらいあるだろう。<br />
@@ -206,18 +225,46 @@ const Concept = () => {
   );
 };
 
+const Origin = () => {
+  return (
+    <section className="py-[100px] md:py-[160px] bg-white">
+      <div className="container mx-auto px-6 md:px-12">
+        <FadeIn className="max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-12 leading-normal">
+            場所さえあれば、<br />人は自分の言葉で自分を語れる。
+          </h2>
+          <div className="space-y-8 text-stone-600 text-base md:text-lg leading-loose">
+            <p>
+              私が過去2,000人の面接で聞いてきたのは、<br />
+              「受かるための言葉」ばかりだった。
+            </p>
+            <p>
+              自分がどんな人間で、何を思い、<br />
+              何に情熱をたぎらせ、何をやりたくないのか。<br />
+              そんなストレートな声は、面接では一度も聞けなかった。
+            </p>
+          </div>
+          <p className="text-xl md:text-2xl font-serif text-stone-900 mt-16 leading-relaxed">
+            標は、そのための場所。
+          </p>
+        </FadeIn>
+      </div>
+    </section>
+  );
+};
+
 const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
   <div className="group relative isolate pt-8">
-    <div className="absolute top-0 left-0 right-0 md:right-4 h-[1px] bg-stone-200 group-hover:bg-stone-400 transition-colors duration-500"></div>
-    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-200 font-serif -z-10 group-hover:text-stone-300 transition-colors">
+    <div className="absolute top-0 left-0 right-0 md:right-4 h-[1px] bg-stone-700 group-hover:bg-stone-500 transition-colors duration-500"></div>
+    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-800 font-serif -z-10 group-hover:text-stone-700 transition-colors">
       {number}
     </div>
-    <div className="mb-6 text-stone-800">
-      <Icon strokeWidth={1} size={32} className="mb-4 text-stone-400 group-hover:text-stone-600 transition-colors" />
+    <div className="mb-6 text-stone-200">
+      <Icon strokeWidth={1} size={32} className="mb-4 text-stone-500 group-hover:text-stone-300 transition-colors" />
       <h3 className="text-xl md:text-2xl font-serif mb-1">{title}</h3>
-      <p className="text-xs text-stone-400 tracking-widest font-english">{subtitle}</p>
+      <p className="text-xs text-stone-500 tracking-widest font-english">{subtitle}</p>
     </div>
-    <p className="text-stone-600 text-base leading-7">
+    <p className="text-stone-400 text-base leading-7">
       {description}
     </p>
   </div>
@@ -225,16 +272,16 @@ const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
 
 const Service = () => {
   return (
-    <section id="service" className="py-[100px] md:py-[160px] bg-white">
+    <section id="service" className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9]">
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn className="mb-24 md:mb-32 relative">
-          <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
-            <p className="text-base tracking-widest text-stone-600 font-english">Process</p>
+          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8">
+            <p className="text-base tracking-widest text-stone-100 font-english">Process</p>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
+          <h2 className="text-3xl md:text-4xl font-serif text-stone-200">
             あなたの「今」が映像になるまで
           </h2>
-          <p className="text-stone-500 text-base mt-5 max-w-md">
+          <p className="text-stone-400 text-base mt-5 max-w-md">
             対話から、撮影、編集まで。<br />
             標は一貫して、あなたをそのまま映します。
           </p>
@@ -276,38 +323,37 @@ const Service = () => {
 
 const Philosophy = () => {
   return (
-    <section id="philosophy" className="py-[100px] md:py-[160px] bg-[#1C1917] text-[#FAFAF9] relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-50"></div>
-      </div>
-
+    <section id="philosophy" className="py-[100px] md:py-[120px] bg-[#e8e3de] relative overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto text-left">
           <FadeIn>
-            <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12">
-              <p className="text-base tracking-widest text-stone-100 font-english">Philosophy</p>
+            <div className="w-[200px] h-[85px] bg-white flex items-center justify-center mb-12">
+              <p className="text-base tracking-widest text-stone-600 font-english">Philosophy</p>
             </div>
-            <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-stone-200">
+            <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-[#1a1a1a]">
               テクノロジーが進歩し、<br />
               あらゆることが加速していく時代だからこそ。<br />
               立ち止まり、自分の声に耳を澄ます時間がいる。
             </h2>
-            <p className="text-stone-400 leading-loose text-base md:text-lg mb-16">
-              私は長く「最先端」と「人間の根源的なもの」の間を行き来してきました。<br />
-              その結果、辿り着いたのは、とてもシンプルなことでした。<br /><br />
-
-              人は自分の言葉を聞いたことがないということ。<br /><br />
-              <span className="font-serif text-lg md:text-xl font-medium text-stone-300">考えているつもりでも、考えていない。<br />
+            <p className="text-stone-600 leading-loose text-base md:text-lg">
+              私は長く、テクノロジーの最前線と、人が自分を語る採用現場の間を行き来してきました。<br />
+              その結果、辿り着いたのは、とてもシンプルな結論でした。
+            </p>
+            <p className="text-[#1a1a1a] font-light leading-relaxed text-2xl md:text-3xl my-20 text-center">
+              人は自分の言葉を聞いたことがない。
+            </p>
+            <p className="text-stone-600 leading-loose text-base md:text-lg mb-16">
+              <span className="font-light text-base md:text-lg leading-loose text-stone-500">考えているつもりでも、考えていない。<br />
                 わかっているつもりでも、見えていない。<br />
                 語れるつもりでも、まだ声にしていない。</span><br /><br />
 
-              「標」は、あなたの今をそのまま映す、プライベート・ドキュメンタリーです。<br />
-              「何かを変えるため」ではなく、「ただ見るため」に。<br />
-              誰にも公開しない、あなたの人生の現在地を。
+              「標」は、あなたの今をそのまま映し残す、プライベート・ドキュメンタリーです。<br />
+              「何かを変えるため」ではなく、「いつか見るため」。<br /><br />
+              あなたの人生の現在地が、誰にも公開されない「標」となる。
             </p>
             <div className="text-right">
-              <p className="font-serif text-xl tracking-widest">藤堂 八雲</p>
-              <p className="text-sm text-stone-300 tracking-wider mt-2"><span className="font-english">標師 / Your Life Compass Founder</span></p>
+              <p className="font-serif text-xl tracking-widest text-[#1a1a1a]">藤堂 八雲</p>
+              <p className="text-sm text-stone-500 tracking-wider mt-2"><span className="font-english">標師 / Your Life Compass Founder</span></p>
             </div>
           </FadeIn>
         </div>
@@ -317,6 +363,19 @@ const Philosophy = () => {
 };
 
 const voicesData = [
+  {
+    id: 4,
+    attribute: '50代・男性・人気四川料理店オーナーシェフ',
+    hook: '全部、「人」の話に\nなっていた。',
+    image: '/images/voice-chef.jpg',
+    body: [
+      '料理人って、自分のことを語る機会がほとんどない。',
+      '毎日厨房に立って、仕入れて、仕込んで、お客さんに提供して。その繰り返しの日々の中に自分の全部がある。でもそれを誰かにちゃんと話したことがあるかって言われたら、なかった。',
+      'カメラの前に座ったとき、最初は何を話せばいいかわからなかった。\nでも不思議なもので、話し始めたら止まらなかった。\nなんでこの道に進んだのか、四川で勉強しているときに何を感じていたのか、一人で追求することの苦悩やをどこで感じたのか。普段、お客さんにも、スタッフにも、家族にも話さないようなことが、するすると出てきた。',
+      '自分でも驚いたのは、料理の話をしているつもりなのに、結局ぜんぶ「人」の話になっていたこと。共に食材を探求する友人との関係、一緒に働く仲間、家族との時間。追いかけているものは料理なんだけど、その根っこにはいつも誰かがいたんだなと。それを、自分の声で、自分の言葉で聞いたのは初めてだった。',
+      '撮影が終わって「どうでしたか」と聞かれたとき、うまく言えなかったけど、すごくよかった。何がよかったのか、正直まだ言葉にできない。ただ、自分が何を大事にして生きてきたのかが、映像の中にはちゃんとあった。それだけで十分だった。',
+    ],
+  },
   {
     id: 1,
     attribute: '30代・女性・スタートアップ創業2年目',
@@ -354,19 +413,6 @@ const voicesData = [
       '話しているうちに、結婚するということが、自分の人生の中でどういう位置にあるのかが、なんとなく見えてきた気がした。',
       '結婚式の映像は「あの日」の記録。\nでもこの映像は、あの日を迎える前の「私そのもの」の記録。まだ何も始まっていない、期待と不安が混ざったままの、飾ってない自分。',
       '10年後、この映像を観て泣くかもしれないし、笑うかもしれない。今はどっちかわからないけど、残しておいてよかったって思う気がする。',
-    ],
-  },
-  {
-    id: 4,
-    attribute: '50代・男性・人気四川料理店オーナーシェフ',
-    hook: '全部、「人」の話に\nなっていた。',
-    image: '/images/voice-chef.jpg',
-    body: [
-      '料理人って、自分のことを語る機会がほとんどない。',
-      '毎日厨房に立って、仕入れて、仕込んで、お客さんに提供して。その繰り返しの日々の中に自分の全部がある。でもそれを誰かにちゃんと話したことがあるかって言われたら、なかった。',
-      'カメラの前に座ったとき、最初は何を話せばいいかわからなかった。\nでも不思議なもので、話し始めたら止まらなかった。\nなんでこの道に進んだのか、四川で勉強しているときに何を感じていたのか、一人で追求することの苦悩やをどこで感じたのか。普段、お客さんにも、スタッフにも、家族にも話さないようなことが、するすると出てきた。',
-      '自分でも驚いたのは、料理の話をしているつもりなのに、結局ぜんぶ「人」の話になっていたこと。共に食材を探求する友人との関係、一緒に働く仲間、家族との時間。追いかけているものは料理なんだけど、その根っこにはいつも誰かがいたんだなと。それを、自分の声で、自分の言葉で聞いたのは初めてだった。',
-      '撮影が終わって「どうでしたか」と聞かれたとき、うまく言えなかったけど、すごくよかった。何がよかったのか、正直まだ言葉にできない。ただ、自分が何を大事にして生きてきたのかが、映像の中にはちゃんとあった。それだけで十分だった。',
     ],
   },
 ];
@@ -450,22 +496,22 @@ const Voices = () => {
 
   return (
     <>
-      <section id="voices" ref={sectionRef} className="py-20 md:py-28 bg-gray-50">
+      <section id="voices" ref={sectionRef} className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9]">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-20">
-            <div className="w-[200px] h-[85px] bg-[#E8E4DF] flex items-center justify-center mb-8">
-              <p className="text-base tracking-widest text-stone-600 font-english">Impressions</p>
+            <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8">
+              <p className="text-base tracking-widest text-stone-100 font-english">Impressions</p>
             </div>
-            <h2 className="text-3xl md:text-4xl font-serif text-stone-900">
+            <h2 className="text-3xl md:text-4xl font-serif text-stone-200">
               自分を見つめた人たちの、それぞれの言葉。
             </h2>
           </div>
           <div
-            className="voices-scroll flex gap-6 overflow-x-auto px-6 md:px-12 pb-4 md:justify-center"
+            className="voices-scroll flex gap-6 overflow-x-auto px-6 md:px-12 pb-4"
             style={{
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch',
@@ -495,15 +541,15 @@ const Voices = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-[100px] md:py-[160px] bg-[#FAFAF9]">
+    <section id="contact" className="py-[100px] md:py-[120px] bg-[#FAFAF9]">
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn>
           <div className="border border-stone-200 bg-white p-8 md:p-20 max-w-5xl mx-auto shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-6">
-              その眼差しが、鮮明なうちに。
+              その声は、あなたのものだから。
             </h2>
             <p className="text-stone-500 text-base md:text-lg mb-12">
-              撮影のご相談、ご質問などは、<br />
+              「標」のご質問、ご相談などは、<br />
               こちらからお問い合わせください。
             </p>
             <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-sm group">
@@ -519,14 +565,17 @@ const Contact = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#FAFAF9] py-12 border-t border-stone-200">
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-stone-400 text-sm tracking-wider">
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-4 md:mb-0 hover:text-stone-600 transition-colors cursor-pointer">
-          <span className="font-serif text-stone-600 text-base mr-2">標</span> <span className="font-english">SHIRUBE</span>
+    <footer className="bg-[#1C1917] py-16 border-t border-stone-800">
+      <div className="container mx-auto px-6 md:px-12 flex flex-col items-center">
+        <p className="text-base md:text-lg text-stone-400 font-light tracking-wide mb-10">
+          人の言葉を、そのまま残す。
+        </p>
+        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-8 text-stone-300 hover:text-white transition-colors cursor-pointer">
+          <span className="font-serif text-base mr-2">標</span> <span className="font-english text-sm tracking-wider">SHIRUBE</span>
         </a>
-        <div className="mt-4 md:mt-0 flex flex-col md:flex-row items-center gap-2 md:gap-0">
-          <span className="font-english">© 2026 SHIRUBE - Your Life Compass.</span>
-          <a href="https://www.yakumo-todo.com/" className="md:ml-4 hover:text-stone-600 transition-colors underline decoration-stone-300 underline-offset-4 font-english">Produced by Yakumo Todo, TY Creative Office</a>
+        <div className="flex flex-col items-center gap-2">
+          <span className="font-english text-xs tracking-wider text-stone-500">© 2026 SHIRUBE - Your Life Compass.</span>
+          <a href="https://www.yakumo-todo.com/" className="font-english text-[11px] tracking-wider text-[#c9a96e] no-underline hover:underline hover:underline-offset-4 transition-colors">Produced by Yakumo Todo, TY Creative Office</a>
         </div>
       </div>
     </footer>
@@ -627,7 +676,9 @@ const App = () => {
             `}</style>
       <Navigation />
       <Hero />
+      <Director />
       <Concept />
+      <Origin />
       <Service />
       <Philosophy />
       <Voices />
