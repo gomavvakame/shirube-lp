@@ -60,7 +60,7 @@ const Navigation = () => {
             { ja: 'コンセプト', en: 'Concept', href: '#concept' },
             { ja: '工程', en: 'Process', href: '#service' },
             { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
-            { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
+            { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
             <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
               <span className="block text-base tracking-widest">{item.ja}</span>
@@ -87,7 +87,7 @@ const Navigation = () => {
           { ja: 'コンセプト', en: 'Concept', href: '#concept' },
           { ja: '工程', en: 'Process', href: '#service' },
           { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
-          { ja: 'お問い合せ', en: 'Contact', href: '#contact' },
+          { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
         ].map((item, index) => (
           <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
             <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
