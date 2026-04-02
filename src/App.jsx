@@ -179,24 +179,10 @@ const Concept = () => {
   return (
     <section id="concept" className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9] relative">
       <div className="container mx-auto px-6 md:px-12">
-        {/* Image */}
-        <FadeIn className="max-w-[800px] mx-auto relative mb-16 md:mb-20">
-          <div className="aspect-[16/9] overflow-hidden rounded-sm relative group">
-            <img
-              src="/concept.jpg"
-              alt="光と影"
-              loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-stone-900/10"></div>
-          </div>
-          <div className="absolute -bottom-8 -right-8 md:-top-8 md:bottom-auto md:-left-8 md:right-auto w-[200px] h-[85px] bg-[#A8A29E] p-6 flex items-center justify-center">
+        <FadeIn className="max-w-2xl mx-auto">
+          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12">
             <p className="text-base tracking-widest text-stone-100 font-english">Concept</p>
           </div>
-        </FadeIn>
-
-        {/* Text */}
-        <FadeIn delay={0.2} className="max-w-[680px] mx-auto">
           <h2 className="text-3xl md:text-4xl font-serif text-stone-200 mb-12 leading-normal text-left">
             流れゆく時間の中に、<br />標を。
           </h2>
@@ -256,7 +242,7 @@ const Origin = () => {
 const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
   <div className="group relative isolate pt-8">
     <div className="absolute top-0 left-0 right-0 md:right-4 h-[1px] bg-stone-700 group-hover:bg-stone-500 transition-colors duration-500"></div>
-    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-800 font-serif -z-10 group-hover:text-stone-700 transition-colors">
+    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-600/30 font-serif -z-10 group-hover:text-stone-500/50 transition-colors duration-500">
       {number}
     </div>
     <div className="mb-6 text-stone-200">
