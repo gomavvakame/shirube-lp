@@ -50,8 +50,12 @@ const Navigation = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
       <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className={`text-4xl font-serif font-medium tracking-widest z-50 transition-colors ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>
-          標 <span className="text-sm ml-2 tracking-wider font-english opacity-60">SHIRUBE</span>
+        <a href="#" className="z-50 flex items-center gap-3" aria-label="標 SHIRUBE">
+          <span
+            className={`block w-[36px] h-[40px] transition-colors duration-500 ${isMenuOpen ? 'bg-stone-900' : isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}
+            style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
+          ></span>
+          <span className={`text-base tracking-[0.2em] font-english opacity-60 transition-colors duration-500 ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>SHIRUBE</span>
         </a>
 
         {/* Desktop Menu */}
@@ -556,8 +560,12 @@ const Footer = () => {
         <p className="text-base md:text-lg text-stone-400 font-light tracking-wide mb-10">
           人の言葉を、そのまま残す。
         </p>
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-8 text-stone-300 hover:text-white transition-colors cursor-pointer">
-          <span className="font-serif text-base mr-2">標</span> <span className="font-english text-sm tracking-wider">SHIRUBE</span>
+        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mb-8 flex items-center gap-3 text-stone-300 hover:text-white transition-colors cursor-pointer" aria-label="標 SHIRUBE">
+          <span
+            className="block w-[36px] h-[40px] bg-stone-300 transition-colors group-hover:bg-white"
+            style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
+          ></span>
+          <span className="font-english text-base tracking-[0.2em]">SHIRUBE</span>
         </a>
         <div className="flex flex-col items-center gap-2">
           <span className="font-english text-xs tracking-wider text-stone-500">© 2026 SHIRUBE - Your Life Compass.</span>
