@@ -501,7 +501,7 @@ const Voices = () => {
             </h2>
           </div>
           <div
-            className="voices-scroll flex gap-6 overflow-x-auto px-6 md:px-12 pb-4"
+            className="voices-scroll flex gap-12 overflow-x-auto px-6 md:px-12 pb-4 md:mx-auto md:w-fit md:max-w-full"
             style={{
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch',
