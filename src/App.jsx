@@ -497,7 +497,7 @@ const Voices = () => {
               <p className="text-base tracking-widest text-stone-100 font-english">Impressions</p>
             </div>
             <h2 className="text-3xl md:text-4xl font-serif text-stone-200">
-              自分を見つめた人たちの、それぞれの言葉。
+              立ち止まり、自分を見つめた人たちの、それぞれの言葉。
             </h2>
           </div>
           <div
