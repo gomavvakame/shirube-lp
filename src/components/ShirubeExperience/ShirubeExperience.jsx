@@ -454,6 +454,29 @@ const ShirubeExperience = () => {
                 </svg>
               </button>
             )}
+
+            {/* DEBUG OVERLAY - 一時的 */}
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              padding: '8px 12px',
+              background: 'rgba(255, 0, 0, 0.85)',
+              color: 'white',
+              fontSize: '11px',
+              fontFamily: 'monospace',
+              zIndex: 9999,
+              lineHeight: 1.4,
+              pointerEvents: 'none',
+            }}>
+              scene: {currentScene} | phase: {phase}<br/>
+              needsScroll: {String(needsScroll)} | scrollCheckDone: {String(scrollCheckDone)}<br/>
+              hasReachedBottom: {String(hasReachedBottom)} | isAtBottom: {String(isAtBottom)}<br/>
+              chevronVisible: {String(chevronVisible)}<br/>
+              scrollHeight: {contentRef.current?.scrollHeight ?? 'null'} | clientHeight: {contentRef.current?.clientHeight ?? 'null'}<br/>
+              scrollTop: {contentRef.current?.scrollTop ?? 'null'}
+            </div>
           </div>
         </>,
         document.body
