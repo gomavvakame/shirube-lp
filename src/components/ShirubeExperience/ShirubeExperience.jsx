@@ -207,7 +207,7 @@ const ShirubeExperience = () => {
     setTimeout(() => {
       setPhase('open');
       initChevronForScene();
-    }, 2000);
+    }, 2500);
   }, [phase, currentScene, initChevronForScene]);
 
   // Scroll monitoring for bottom detection
@@ -410,7 +410,9 @@ const ShirubeExperience = () => {
               className="shirube-exp-dissolve"
               style={{
                 opacity: dissolveOpacity,
-                transition: 'opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: dissolveOpacity === 1
+                  ? 'opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1)'
+                  : 'opacity 1500ms cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             />
 
@@ -454,29 +456,6 @@ const ShirubeExperience = () => {
                 </svg>
               </button>
             )}
-
-            {/* DEBUG OVERLAY - 一時的 */}
-            <div style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              padding: '8px 12px',
-              background: 'rgba(255, 0, 0, 0.85)',
-              color: 'white',
-              fontSize: '11px',
-              fontFamily: 'monospace',
-              zIndex: 9999,
-              lineHeight: 1.4,
-              pointerEvents: 'none',
-            }}>
-              scene: {currentScene} | phase: {phase}<br/>
-              needsScroll: {String(needsScroll)} | scrollCheckDone: {String(scrollCheckDone)}<br/>
-              hasReachedBottom: {String(hasReachedBottom)} | isAtBottom: {String(isAtBottom)}<br/>
-              chevronVisible: {String(chevronVisible)}<br/>
-              scrollHeight: {contentRef.current?.scrollHeight ?? 'null'} | clientHeight: {contentRef.current?.clientHeight ?? 'null'}<br/>
-              scrollTop: {contentRef.current?.scrollTop ?? 'null'}
-            </div>
           </div>
         </>,
         document.body
