@@ -9,8 +9,8 @@
 .shirube-exp-warp-closing #root {
   filter: blur(0px);
   transform: scale(1);
-  transition: filter 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms,
-              transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms;
+  transition: filter 800ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Dark overlay behind warp ── */
@@ -39,8 +39,8 @@
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(14px);
-  transform: scale(1.1);
+  filter: blur(10px);
+  transform: scale(1.08);
 }
 
 .shirube-exp-bg-overlay {

@@ -18,6 +18,8 @@ const ShirubeExperience = () => {
   const [swipeTransition, setSwipeTransition] = useState('none');
   const [needsScroll, setNeedsScroll] = useState(false);
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
+  const [scrollCheckDone, setScrollCheckDone] = useState(false);
 
   const triggerRef = useRef(null);
   const contentRef = useRef(null);
@@ -40,6 +42,7 @@ const ShirubeExperience = () => {
     if (!container) return;
     const scrollable = container.scrollHeight > container.clientHeight;
     setNeedsScroll(scrollable);
+    setScrollCheckDone(true);
     if (!scrollable) {
       if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
       chevronTimerRef.current = setTimeout(() => setChevronVisible(true), 2000);
@@ -49,6 +52,8 @@ const ShirubeExperience = () => {
   const initChevronForScene = useCallback(() => {
     setChevronVisible(false);
     setHasReachedBottom(false);
+    setIsAtBottom(false);
+    setScrollCheckDone(false);
     if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
     requestAnimationFrame(() => {
       checkScrollability();
@@ -62,11 +67,23 @@ const ShirubeExperience = () => {
     document.body.style.width = '100%';
   }, []);
 
+  const sectionRef = useRef(null);
+
   const unlockScroll = useCallback(() => {
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
+    // First restore to saved position so DOM layout is correct
     window.scrollTo(0, savedScrollYRef.current);
+    // Then jump to center the section in viewport
+    requestAnimationFrame(() => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const sectionCenter = window.scrollY + rect.top + rect.height / 2;
+        const targetY = sectionCenter - window.innerHeight / 2;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'instant' });
+      }
+    });
   }, []);
 
   const executeClose = useCallback(() => {
@@ -77,19 +94,24 @@ const ShirubeExperience = () => {
 
     ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_close', label: `closed_at_scene_${currentSceneRef.current}`, value: currentSceneRef.current });
 
+    // t=0: Modal begins fading out (800ms).
+    // Unlock scroll now — dark overlay + modal still fully cover LP.
     setModalOpacity(0);
     setModalScale(0.96);
+    unlockScroll();
 
+    // t=800ms: Modal faded. Begin LP reveal.
     setTimeout(() => {
+      document.body.classList.remove('shirube-exp-warp-active');
       document.body.classList.add('shirube-exp-warp-closing');
       setDarkOverlayOpacity(0);
     }, 800);
 
+    // t=1600ms: Everything complete. Unmount.
     setTimeout(() => {
       document.body.classList.remove('shirube-exp-warp-closing');
       setIsOpen(false);
       setPhase('idle');
-      unlockScroll();
       triggerRef.current?.focus();
     }, 1600);
   }, [unlockScroll]);
@@ -137,7 +159,6 @@ const ShirubeExperience = () => {
 
     setTimeout(() => {
       setPhase('open');
-      document.body.classList.remove('shirube-exp-warp-active');
       initChevronForScene();
     }, 2400);
   }, [initChevronForScene, lockScroll]);
@@ -155,10 +176,20 @@ const ShirubeExperience = () => {
       setCurrentScene(next);
       if (contentRef.current) contentRef.current.scrollTop = 0;
 
+      // Reset scroll/chevron state immediately with content switch
+      setHasReachedBottom(false);
+      setIsAtBottom(false);
+      setScrollCheckDone(false);
+
       ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_scene_view', label: `scene_${next}`, value: next });
       if (next === 2) {
         ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_complete' });
       }
+
+      // Check scrollability after new content renders
+      requestAnimationFrame(() => {
+        checkScrollability();
+      });
     }, 1000);
 
     setTimeout(() => {
@@ -167,9 +198,8 @@ const ShirubeExperience = () => {
 
     setTimeout(() => {
       setPhase('open');
-      initChevronForScene();
     }, 2000);
-  }, [phase, currentScene, initChevronForScene]);
+  }, [phase, currentScene, checkScrollability]);
 
   // Scroll monitoring for bottom detection
   useEffect(() => {
@@ -180,6 +210,7 @@ const ShirubeExperience = () => {
     const handleScroll = () => {
       const scrolledToBottom =
         container.scrollTop + container.clientHeight >= container.scrollHeight - 8;
+      setIsAtBottom(scrolledToBottom);
       if (scrolledToBottom) {
         setHasReachedBottom(true);
         setChevronVisible(true);
@@ -319,7 +350,7 @@ const ShirubeExperience = () => {
   const scene = scenes[currentScene];
   const titleId = `shirube-exp-title-${scene.id}`;
 
-  const showFadeMask = needsScroll && !hasReachedBottom;
+  const showFadeMask = needsScroll && !isAtBottom;
 
   const modalTransform = swipeTranslateY > 0
     ? `scale(${modalScale}) translateY(${swipeTranslateY}px)`
@@ -342,7 +373,7 @@ const ShirubeExperience = () => {
               transition: swipeTranslateY > 0
                 ? swipeTransition
                 : phase === 'closing'
-                  ? 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms'
+                  ? 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1)'
                   : 'opacity 1200ms cubic-bezier(0.7, 0, 0.84, 0)',
             }}
           />
@@ -402,7 +433,7 @@ const ShirubeExperience = () => {
             {currentScene < 2 && (
               <button
                 ref={firstFocusableRef}
-                className={`shirube-exp-chevron ${chevronVisible ? 'visible' : ''}`}
+                className={`shirube-exp-chevron ${chevronVisible && scrollCheckDone ? 'visible' : ''}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleNextScene();
@@ -422,7 +453,7 @@ const ShirubeExperience = () => {
 
   return (
     <>
-      <section className="shirube-exp-section">
+      <section ref={sectionRef} className="shirube-exp-section">
         <p className="shirube-exp-lead">少しだけ覗いてみてください。</p>
         <div className="shirube-exp-trigger-wrap">
           <button
