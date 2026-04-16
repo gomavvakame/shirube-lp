@@ -114,7 +114,7 @@
 
 /* ── Chevron ── */
 .shirube-exp-chevron {
-  position: fixed;
+  position: absolute;
   bottom: 56px;
   left: 50%;
   transform: translateX(-50%);
@@ -124,18 +124,23 @@
   cursor: pointer;
   padding: 12px;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
 .shirube-exp-chevron.visible {
   opacity: 0.5;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
 }
 
 .shirube-exp-chevron:hover {
   opacity: 1;
 }
 
-.shirube-exp-chevron svg {
+.shirube-exp-chevron.visible svg {
   animation: shirube-chevron-float 2.4s ease-in-out infinite;
 }
 
