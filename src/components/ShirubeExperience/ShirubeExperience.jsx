@@ -55,10 +55,7 @@ const ShirubeExperience = () => {
     setIsAtBottom(false);
     setScrollCheckDone(false);
     if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
-    requestAnimationFrame(() => {
-      checkScrollability();
-    });
-  }, [checkScrollability]);
+  }, []);
 
   const lockScroll = useCallback(() => {
     savedScrollYRef.current = window.scrollY;
@@ -186,10 +183,6 @@ const ShirubeExperience = () => {
         ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_complete' });
       }
 
-      // Check scrollability after new content renders
-      requestAnimationFrame(() => {
-        checkScrollability();
-      });
     }, 1000);
 
     setTimeout(() => {
@@ -199,7 +192,18 @@ const ShirubeExperience = () => {
     setTimeout(() => {
       setPhase('open');
     }, 2000);
-  }, [phase, currentScene, checkScrollability]);
+  }, [phase, currentScene]);
+
+  // Check scrollability after React commits new scene content to DOM
+  useEffect(() => {
+    if (!isOpen || scrollCheckDone) return;
+    // Double rAF ensures layout is complete after React commit
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        checkScrollability();
+      });
+    });
+  }, [isOpen, currentScene, checkScrollability]);
 
   // Scroll monitoring for bottom detection
   useEffect(() => {
