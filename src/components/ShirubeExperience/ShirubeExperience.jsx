@@ -13,6 +13,11 @@ const ShirubeExperience = () => {
   const [modalScale, setModalScale] = useState(0.96);
   const [dissolveOpacity, setDissolveOpacity] = useState(0);
   const [chevronVisible, setChevronVisible] = useState(false);
+  const [swipeTranslateY, setSwipeTranslateY] = useState(0);
+  const [swipeOverlayDim, setSwipeOverlayDim] = useState(0);
+  const [swipeTransition, setSwipeTransition] = useState('none');
+  const [needsScroll, setNeedsScroll] = useState(false);
+  const [hasReachedBottom, setHasReachedBottom] = useState(false);
 
   const triggerRef = useRef(null);
   const contentRef = useRef(null);
@@ -20,12 +25,83 @@ const ShirubeExperience = () => {
   const chevronTimerRef = useRef(null);
   const firstFocusableRef = useRef(null);
   const lastFocusableRef = useRef(null);
+  const savedScrollYRef = useRef(0);
+  const closedViaPopstateRef = useRef(false);
+  const touchStartRef = useRef(null);
+  const swipingRef = useRef(false);
+  const phaseRef = useRef('idle');
+  const currentSceneRef = useRef(0);
 
-  const resetChevronTimer = useCallback(() => {
+  phaseRef.current = phase;
+  currentSceneRef.current = currentScene;
+
+  const checkScrollability = useCallback(() => {
+    const container = contentRef.current;
+    if (!container) return;
+    const scrollable = container.scrollHeight > container.clientHeight;
+    setNeedsScroll(scrollable);
+    if (!scrollable) {
+      if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
+      chevronTimerRef.current = setTimeout(() => setChevronVisible(true), 2000);
+    }
+  }, []);
+
+  const initChevronForScene = useCallback(() => {
+    setChevronVisible(false);
+    setHasReachedBottom(false);
+    if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
+    requestAnimationFrame(() => {
+      checkScrollability();
+    });
+  }, [checkScrollability]);
+
+  const lockScroll = useCallback(() => {
+    savedScrollYRef.current = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollYRef.current}px`;
+    document.body.style.width = '100%';
+  }, []);
+
+  const unlockScroll = useCallback(() => {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollYRef.current);
+  }, []);
+
+  const executeClose = useCallback(() => {
+    if (phaseRef.current !== 'open') return;
+    setPhase('closing');
     setChevronVisible(false);
     if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
-    chevronTimerRef.current = setTimeout(() => setChevronVisible(true), 2000);
-  }, []);
+
+    ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_close', label: `closed_at_scene_${currentSceneRef.current}`, value: currentSceneRef.current });
+
+    setModalOpacity(0);
+    setModalScale(0.96);
+
+    setTimeout(() => {
+      document.body.classList.add('shirube-exp-warp-closing');
+      setDarkOverlayOpacity(0);
+    }, 800);
+
+    setTimeout(() => {
+      document.body.classList.remove('shirube-exp-warp-closing');
+      setIsOpen(false);
+      setPhase('idle');
+      unlockScroll();
+      triggerRef.current?.focus();
+    }, 1600);
+  }, [unlockScroll]);
+
+  const closeModal = useCallback((fromPopstate = false) => {
+    if (fromPopstate) {
+      closedViaPopstateRef.current = true;
+      executeClose();
+    } else {
+      window.history.back();
+    }
+  }, [executeClose]);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
@@ -34,8 +110,18 @@ const ShirubeExperience = () => {
     setDarkOverlayOpacity(0);
     setModalOpacity(0);
     setModalScale(0.96);
-    document.body.style.overflow = 'hidden';
+    setSwipeTranslateY(0);
+    setSwipeOverlayDim(0);
+    setSwipeTransition('none');
+    setChevronVisible(false);
+    setNeedsScroll(false);
+    setHasReachedBottom(false);
+    closedViaPopstateRef.current = false;
+    if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
+    lockScroll();
     document.body.classList.add('shirube-exp-warp-active');
+
+    window.history.pushState({ shirubeModalOpen: true }, '');
 
     ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_open' });
     ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_scene_view', label: 'scene_0', value: 0 });
@@ -52,34 +138,9 @@ const ShirubeExperience = () => {
     setTimeout(() => {
       setPhase('open');
       document.body.classList.remove('shirube-exp-warp-active');
-      resetChevronTimer();
+      initChevronForScene();
     }, 2400);
-  }, [resetChevronTimer]);
-
-  const handleClose = useCallback(() => {
-    if (phase !== 'open') return;
-    setPhase('closing');
-    setChevronVisible(false);
-    if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
-
-    ReactGA.event({ category: 'ShirubeExperience', action: 'shirube_experience_close', label: `closed_at_scene_${currentScene}`, value: currentScene });
-
-    setModalOpacity(0);
-    setModalScale(0.96);
-
-    setTimeout(() => {
-      document.body.classList.add('shirube-exp-warp-closing');
-      setDarkOverlayOpacity(0);
-    }, 800);
-
-    setTimeout(() => {
-      document.body.classList.remove('shirube-exp-warp-closing');
-      setIsOpen(false);
-      setPhase('idle');
-      document.body.style.overflow = '';
-      triggerRef.current?.focus();
-    }, 1600);
-  }, [phase, currentScene]);
+  }, [initChevronForScene, lockScroll]);
 
   const handleNextScene = useCallback(() => {
     if (phase !== 'open' || currentScene >= 2) return;
@@ -106,15 +167,55 @@ const ShirubeExperience = () => {
 
     setTimeout(() => {
       setPhase('open');
-      resetChevronTimer();
+      initChevronForScene();
     }, 2000);
-  }, [phase, currentScene, resetChevronTimer]);
+  }, [phase, currentScene, initChevronForScene]);
 
+  // Scroll monitoring for bottom detection
+  useEffect(() => {
+    if (!isOpen || phase !== 'open') return;
+    const container = contentRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrolledToBottom =
+        container.scrollTop + container.clientHeight >= container.scrollHeight - 8;
+      if (scrolledToBottom) {
+        setHasReachedBottom(true);
+        setChevronVisible(true);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [isOpen, phase, currentScene]);
+
+  // Resize re-check
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleResize = () => checkScrollability();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isOpen, checkScrollability]);
+
+  // Popstate listener
+  useEffect(() => {
+    if (!isOpen) return;
+    const handlePopstate = () => {
+      if (phaseRef.current !== 'idle') {
+        closeModal(true);
+      }
+    };
+    window.addEventListener('popstate', handlePopstate);
+    return () => window.removeEventListener('popstate', handlePopstate);
+  }, [isOpen, closeModal]);
+
+  // Keyboard (Esc + focus trap)
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e) => {
       if (e.key === 'Escape') {
-        handleClose();
+        closeModal(false);
       }
       if (e.key === 'Tab' && modalRef.current) {
         const focusable = modalRef.current.querySelectorAll(
@@ -138,8 +239,77 @@ const ShirubeExperience = () => {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [isOpen, handleClose]);
+  }, [isOpen, closeModal]);
 
+  // Swipe down to close
+  useEffect(() => {
+    if (!isOpen) return;
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const onTouchStart = (e) => {
+      if (phaseRef.current !== 'open') return;
+      const touch = e.touches[0];
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+      swipingRef.current = false;
+      setSwipeTransition('none');
+    };
+
+    const onTouchMove = (e) => {
+      if (!touchStartRef.current || phaseRef.current !== 'open') return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - touchStartRef.current.x;
+      const dy = touch.clientY - touchStartRef.current.y;
+
+      if (!swipingRef.current) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+          touchStartRef.current = null;
+          return;
+        }
+        if (dy < 0) return;
+        const content = contentRef.current;
+        if (content && content.scrollTop > 0) return;
+        if (dy > 10) {
+          swipingRef.current = true;
+        }
+      }
+
+      if (swipingRef.current && dy > 0) {
+        e.preventDefault();
+        setSwipeTranslateY(dy);
+        setSwipeOverlayDim(Math.min(dy / 400, 0.7));
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (!swipingRef.current) {
+        touchStartRef.current = null;
+        return;
+      }
+      const dy = swipeTranslateY;
+      if (dy >= 120) {
+        closeModal(false);
+      } else {
+        setSwipeTransition('transform 0.3s ease, opacity 0.3s ease');
+        setSwipeTranslateY(0);
+        setSwipeOverlayDim(0);
+        setTimeout(() => setSwipeTransition('none'), 300);
+      }
+      touchStartRef.current = null;
+      swipingRef.current = false;
+    };
+
+    modal.addEventListener('touchstart', onTouchStart, { passive: true });
+    modal.addEventListener('touchmove', onTouchMove, { passive: false });
+    modal.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      modal.removeEventListener('touchstart', onTouchStart);
+      modal.removeEventListener('touchmove', onTouchMove);
+      modal.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [isOpen, swipeTranslateY, closeModal]);
+
+  // Cleanup
   useEffect(() => {
     return () => {
       if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
@@ -149,16 +319,31 @@ const ShirubeExperience = () => {
   const scene = scenes[currentScene];
   const titleId = `shirube-exp-title-${scene.id}`;
 
+  const showFadeMask = needsScroll && !hasReachedBottom;
+
+  const modalTransform = swipeTranslateY > 0
+    ? `scale(${modalScale}) translateY(${swipeTranslateY}px)`
+    : `scale(${modalScale})`;
+
+  const modalTransitionStyle = (() => {
+    if (swipeTranslateY > 0) return swipeTransition;
+    if (phase === 'closing')
+      return 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1), transform 800ms cubic-bezier(0.22, 1, 0.36, 1)';
+    return 'opacity 1200ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms';
+  })();
+
   const modal = isOpen
     ? createPortal(
         <>
           <div
             className="shirube-exp-dark-overlay"
             style={{
-              opacity: darkOverlayOpacity,
-              transition: phase === 'closing'
-                ? 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms'
-                : 'opacity 1200ms cubic-bezier(0.7, 0, 0.84, 0)',
+              opacity: darkOverlayOpacity * (1 - swipeOverlayDim),
+              transition: swipeTranslateY > 0
+                ? swipeTransition
+                : phase === 'closing'
+                  ? 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms'
+                  : 'opacity 1200ms cubic-bezier(0.7, 0, 0.84, 0)',
             }}
           />
           <div
@@ -167,13 +352,12 @@ const ShirubeExperience = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            onClick={() => { if (phase === 'open') handleClose(); }}
+            onClick={() => { if (phase === 'open') closeModal(false); }}
             style={{
               opacity: modalOpacity,
-              transform: `scale(${modalScale})`,
-              transition: phase === 'closing'
-                ? 'opacity 800ms cubic-bezier(0.22, 1, 0.36, 1), transform 800ms cubic-bezier(0.22, 1, 0.36, 1)'
-                : 'opacity 1200ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms',
+              transform: modalTransform,
+              transition: modalTransitionStyle,
+              touchAction: 'pan-y',
             }}
           >
             <div
@@ -208,6 +392,12 @@ const ShirubeExperience = () => {
                 )}
               </div>
             </div>
+
+            <div
+              className="shirube-exp-fade-mask"
+              style={{ opacity: showFadeMask ? 1 : 0 }}
+              aria-hidden="true"
+            />
 
             {currentScene < 2 && (
               <button
