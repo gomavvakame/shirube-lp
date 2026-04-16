@@ -33,6 +33,7 @@ const ShirubeExperience = () => {
   const swipingRef = useRef(false);
   const phaseRef = useRef('idle');
   const currentSceneRef = useRef(0);
+  const chevronAllowedRef = useRef(false);
 
   phaseRef.current = phase;
   currentSceneRef.current = currentScene;
@@ -43,19 +44,30 @@ const ShirubeExperience = () => {
     const scrollable = container.scrollHeight > container.clientHeight;
     setNeedsScroll(scrollable);
     setScrollCheckDone(true);
-    if (!scrollable) {
-      if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
+    if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
+    chevronTimerRef.current = null;
+    // Now allow chevron to be shown
+    chevronAllowedRef.current = true;
+    if (scrollable) {
+      setChevronVisible(false);
+    } else {
       chevronTimerRef.current = setTimeout(() => setChevronVisible(true), 2000);
     }
   }, []);
 
   const initChevronForScene = useCallback(() => {
+    // Block all chevron visibility until check completes
+    chevronAllowedRef.current = false;
     setChevronVisible(false);
     setHasReachedBottom(false);
     setIsAtBottom(false);
     setScrollCheckDone(false);
+    setNeedsScroll(false);
     if (chevronTimerRef.current) clearTimeout(chevronTimerRef.current);
-  }, []);
+    chevronTimerRef.current = null;
+    setTimeout(() => checkScrollability(), 200);
+    setTimeout(() => checkScrollability(), 600);
+  }, [checkScrollability]);
 
   const lockScroll = useCallback(() => {
     savedScrollYRef.current = window.scrollY;
@@ -123,6 +135,7 @@ const ShirubeExperience = () => {
   }, [executeClose]);
 
   const handleOpen = useCallback(() => {
+    chevronAllowedRef.current = false;
     setIsOpen(true);
     setCurrentScene(0);
     setPhase('opening');
@@ -169,11 +182,13 @@ const ShirubeExperience = () => {
     setDissolveOpacity(1);
 
     setTimeout(() => {
+      // Block chevron immediately before any DOM changes
+      chevronAllowedRef.current = false;
+
       const next = currentScene + 1;
       setCurrentScene(next);
       if (contentRef.current) contentRef.current.scrollTop = 0;
 
-      // Reset scroll/chevron state immediately with content switch
       setHasReachedBottom(false);
       setIsAtBottom(false);
       setScrollCheckDone(false);
@@ -191,23 +206,13 @@ const ShirubeExperience = () => {
 
     setTimeout(() => {
       setPhase('open');
+      initChevronForScene();
     }, 2000);
-  }, [phase, currentScene]);
-
-  // Check scrollability after React commits new scene content to DOM
-  useEffect(() => {
-    if (!isOpen || scrollCheckDone) return;
-    // Double rAF ensures layout is complete after React commit
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        checkScrollability();
-      });
-    });
-  }, [isOpen, currentScene, checkScrollability]);
+  }, [phase, currentScene, initChevronForScene]);
 
   // Scroll monitoring for bottom detection
   useEffect(() => {
-    if (!isOpen || phase !== 'open') return;
+    if (!isOpen) return;
     const container = contentRef.current;
     if (!container) return;
 
@@ -215,7 +220,7 @@ const ShirubeExperience = () => {
       const scrolledToBottom =
         container.scrollTop + container.clientHeight >= container.scrollHeight - 8;
       setIsAtBottom(scrolledToBottom);
-      if (scrolledToBottom) {
+      if (scrolledToBottom && chevronAllowedRef.current) {
         setHasReachedBottom(true);
         setChevronVisible(true);
       }
@@ -223,7 +228,7 @@ const ShirubeExperience = () => {
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [isOpen, phase, currentScene]);
+  }, [isOpen, currentScene]);
 
   // Resize re-check
   useEffect(() => {
