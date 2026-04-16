@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Camera, Mic, ChevronDown, Menu, X, ArrowRight, Film } from 'lucide-react';
+import ShirubeExperience from './components/ShirubeExperience/ShirubeExperience';
 
 // Custom Hook for Fade In Animation
 const FadeIn = ({ children, delay = 0, direction = 'up', className = "" }) => {
@@ -184,7 +185,7 @@ const Concept = () => {
     <section id="concept" className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9] relative">
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn className="max-w-2xl mx-auto">
-          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12">
+          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-12 rounded-[3px]">
             <p className="text-base tracking-widest text-stone-100 font-english">Concept</p>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif text-stone-200 mb-12 leading-normal text-left">
@@ -243,12 +244,9 @@ const Origin = () => {
   );
 };
 
-const ServiceCard = ({ number, title, subtitle, icon: Icon, description }) => (
+const ServiceCard = ({ title, subtitle, icon: Icon, description }) => (
   <div className="group relative isolate pt-8">
     <div className="absolute top-0 left-0 right-0 md:right-4 h-[1px] bg-stone-700 group-hover:bg-stone-500 transition-colors duration-500"></div>
-    <div className="absolute top-8 right-0 md:right-4 text-5xl text-stone-600/30 font-serif -z-10 group-hover:text-stone-500/50 transition-colors duration-500">
-      {number}
-    </div>
     <div className="mb-6 text-stone-200">
       <Icon strokeWidth={1} size={32} className="mb-4 text-stone-500 group-hover:text-stone-300 transition-colors" />
       <h3 className="text-xl md:text-2xl font-serif mb-1">{title}</h3>
@@ -265,7 +263,7 @@ const Service = () => {
     <section id="service" className="py-[100px] md:py-[160px] bg-[#2e2a26] text-[#FAFAF9]">
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn className="mb-24 md:mb-32 relative">
-          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8">
+          <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8 rounded-[3px]">
             <p className="text-base tracking-widest text-stone-100 font-english">Process</p>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif text-stone-200">
@@ -280,7 +278,6 @@ const Service = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           <FadeIn delay={0.1} className="h-full">
             <ServiceCard
-              number="01"
               title="対話と探索"
               subtitle="Dialogue"
               icon={Mic}
@@ -289,7 +286,6 @@ const Service = () => {
           </FadeIn>
           <FadeIn delay={0.2} className="h-full">
             <ServiceCard
-              number="02"
               title="撮影と記録"
               subtitle="Shooting"
               icon={Camera}
@@ -298,7 +294,6 @@ const Service = () => {
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">
             <ServiceCard
-              number="03"
               title="編集と昇華"
               subtitle="Editing"
               icon={Film}
@@ -317,7 +312,7 @@ const Philosophy = () => {
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto text-left">
           <FadeIn>
-            <div className="w-[200px] h-[85px] bg-white flex items-center justify-center mb-12">
+            <div className="w-[200px] h-[85px] bg-white flex items-center justify-center mb-12 rounded-[3px]">
               <p className="text-base tracking-widest text-stone-600 font-english">Philosophy</p>
             </div>
             <h2 className="text-2xl md:text-3xl font-serif leading-relaxed mb-12 text-[#1a1a1a]">
@@ -433,7 +428,7 @@ const VoiceModal = ({ voice, onClose }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative bg-white max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 md:p-12 rounded-sm"
+        className="relative bg-white max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 md:p-12 rounded-[3px]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -457,7 +452,7 @@ const VoiceModal = ({ voice, onClose }) => {
 const VoiceCard = ({ voice, onClick }) => (
   <button
     onClick={onClick}
-    className="relative overflow-hidden rounded-lg w-72 md:w-80 h-64 flex-shrink-0 cursor-pointer group scroll-snap-align-start focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400"
+    className="relative overflow-hidden rounded-[3px] w-72 md:w-80 h-64 flex-shrink-0 cursor-pointer group scroll-snap-align-start focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400"
     style={{ scrollSnapAlign: 'start' }}
   >
     <img
@@ -493,7 +488,7 @@ const Voices = () => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-20">
-            <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8">
+            <div className="w-[200px] h-[85px] bg-[#A8A29E] flex items-center justify-center mb-8 rounded-[3px]">
               <p className="text-base tracking-widest text-stone-100 font-english">Impressions</p>
             </div>
             <h2 className="text-3xl md:text-4xl font-serif text-stone-200">
@@ -534,7 +529,7 @@ const Contact = () => {
     <section id="contact" className="py-[100px] md:py-[120px] bg-[#FAFAF9]">
       <div className="container mx-auto px-6 md:px-12">
         <FadeIn>
-          <div className="border border-stone-200 bg-white p-8 md:p-20 max-w-5xl mx-auto shadow-sm text-center">
+          <div className="border border-stone-200 bg-white p-8 md:p-20 max-w-5xl mx-auto shadow-sm text-center rounded-[3px]">
             <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-6">
               その声は、あなたのものだから。
             </h2>
@@ -542,7 +537,7 @@ const Contact = () => {
               「標」のご質問、ご相談などは、<br />
               こちらからお問い合わせください。
             </p>
-            <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-sm group">
+            <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-[3px] group">
               <span className="tracking-widest text-sm">お問い合わせ</span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -675,6 +670,7 @@ const App = () => {
       <Origin />
       <Service />
       <Philosophy />
+      <ShirubeExperience />
       <Voices />
       <Contact />
       <Footer />

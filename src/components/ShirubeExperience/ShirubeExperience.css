@@ -1,0 +1,253 @@
+/* ── Warp: LP blurs out ── */
+.shirube-exp-warp-active #root {
+  filter: blur(14px);
+  transform: scale(1.08);
+  transition: filter 1200ms cubic-bezier(0.7, 0, 0.84, 0),
+              transform 1200ms cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+.shirube-exp-warp-closing #root {
+  filter: blur(0px);
+  transform: scale(1);
+  transition: filter 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms,
+              transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 800ms;
+}
+
+/* ── Dark overlay behind warp ── */
+.shirube-exp-dark-overlay {
+  position: fixed;
+  inset: 0;
+  background: #1a1a1a;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* ── Modal root ── */
+.shirube-exp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── Background image layer ── */
+.shirube-exp-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(14px);
+  transform: scale(1.1);
+}
+
+.shirube-exp-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.72);
+}
+
+/* ── Text container ── */
+.shirube-exp-content {
+  position: relative;
+  z-index: 10;
+  max-width: 720px;
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 96px 48px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.shirube-exp-content::-webkit-scrollbar {
+  display: none;
+}
+
+.shirube-exp-scene-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #d4c8bc;
+  letter-spacing: 0.2em;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.shirube-exp-body p {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 1.0625rem;
+  line-height: 2.0;
+  color: #d4c8bc;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.shirube-exp-body .shirube-exp-empty-line {
+  height: 2.125em;
+}
+
+/* ── White dissolve overlay ── */
+.shirube-exp-dissolve {
+  position: absolute;
+  inset: 0;
+  background: white;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ── Chevron ── */
+.shirube-exp-chevron {
+  position: fixed;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 110;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.shirube-exp-chevron.visible {
+  opacity: 0.5;
+}
+
+.shirube-exp-chevron:hover {
+  opacity: 1;
+}
+
+.shirube-exp-chevron svg {
+  animation: shirube-chevron-float 2.4s ease-in-out infinite;
+}
+
+@keyframes shirube-chevron-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Section ── */
+.shirube-exp-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px 24px;
+}
+
+/* ── Lead text ── */
+.shirube-exp-lead {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 1.375rem;
+  color: #d4c8bc;
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Trigger wrapper ── */
+.shirube-exp-trigger-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48px;
+}
+
+/* ── Trigger button ── */
+.shirube-exp-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 56px;
+  border: 1px solid #c9a96e;
+  border-radius: 0;
+  background: transparent;
+  color: #c9a96e;
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: background-color 0.4s ease, transform 0.15s ease;
+}
+
+.shirube-exp-trigger:hover {
+  background-color: rgba(201, 169, 110, 0.08);
+}
+
+.shirube-exp-trigger:active {
+  transform: scale(0.98);
+}
+
+.shirube-exp-trigger:focus-visible {
+  outline: 2px solid #c9a96e;
+  outline-offset: 2px;
+}
+
+/* ── Breathing underline ── */
+.shirube-exp-trigger-line {
+  display: block;
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  height: 1px;
+  background: #c9a96e;
+  opacity: 0.4;
+  animation: shirube-line-breathe 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+}
+
+@keyframes shirube-line-breathe {
+  0%   { width: 0%; transform: translateX(-50%); }
+  50%  { width: 100%; transform: translateX(-50%); }
+  100% { width: 0%; transform: translateX(-50%); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .shirube-exp-warp-active #root {
+    filter: blur(10px);
+  }
+
+  .shirube-exp-content {
+    padding: 64px 24px;
+  }
+
+  .shirube-exp-body p {
+    font-size: 1rem;
+  }
+
+  .shirube-exp-chevron {
+    bottom: 40px;
+  }
+
+  .shirube-exp-section {
+    padding: 80px 24px;
+  }
+
+  .shirube-exp-lead {
+    font-size: 1.125rem;
+  }
+
+  .shirube-exp-trigger-wrap {
+    margin-top: 36px;
+  }
+
+  .shirube-exp-trigger {
+    font-size: 0.9375rem;
+    padding: 16px 40px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .shirube-exp-section {
+    padding: 100px 24px;
+  }
+}
