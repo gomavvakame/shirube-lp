@@ -236,7 +236,7 @@ const Origin = () => {
             </p>
           </div>
           <p className="text-xl md:text-2xl font-serif text-stone-900 mt-16 leading-relaxed">
-            標は、そのための場所。
+            標は、自分の言葉で、自分を語れる場所。
           </p>
         </FadeIn>
       </div>
