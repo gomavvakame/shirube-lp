@@ -537,7 +537,7 @@ const Contact = () => {
               「標」のご質問、ご相談などは、<br />
               こちらからお問い合わせください。
             </p>
-            <a href="https://www.yakumo-todo.com/contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-[3px] group">
+            <a href="https://yakumo-todo.com/#korekara" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-[3px] group">
               <span className="tracking-widest text-sm">お問い合わせ</span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -564,7 +564,7 @@ const Footer = () => {
         </a>
         <div className="flex flex-col items-center gap-2">
           <span className="font-english text-xs tracking-wider text-stone-500">© 2026 SHIRUBE - Your Life Compass.</span>
-          <a href="https://www.yakumo-todo.com/" className="font-english text-[11px] tracking-wider text-[#c9a96e] no-underline hover:underline hover:underline-offset-4 transition-colors">Produced by Yakumo Todo, TY Creative Office</a>
+          <a href="https://yakumo-todo.com/" className="font-english text-[11px] tracking-wider text-[#c9a96e] no-underline hover:underline hover:underline-offset-4 transition-colors">Produced by Yakumo Todo, TY Creative Office</a>
         </div>
       </div>
     </footer>
