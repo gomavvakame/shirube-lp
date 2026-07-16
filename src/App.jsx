@@ -537,7 +537,7 @@ const Contact = () => {
               「標」のご質問、ご相談などは、<br />
               こちらからお問い合わせください。
             </p>
-            <a href="https://yakumo-todo.com/#korekara" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-[3px] group">
+            <a href="https://yakumo-todo.com/#contact" className="inline-flex items-center gap-4 px-12 py-4 bg-stone-900 text-[#FAFAF9] hover:bg-stone-800 transition-colors duration-300 rounded-[3px] group">
               <span className="tracking-widest text-sm">お問い合わせ</span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
