@@ -50,70 +50,182 @@ const Navigation = () => {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
-      <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className="z-50 flex items-center gap-3" aria-label="標 SHIRUBE">
-          <span
-            className={`block w-[36px] h-[40px] transition-colors duration-500 ${isMenuOpen ? 'bg-stone-900' : isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}
-            style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
-          ></span>
-          <span className={`text-base tracking-[0.2em] font-english opacity-60 transition-colors duration-500 ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>SHIRUBE</span>
-        </a>
+      {/* hero のフェードに合わせて現れるためのラッパー。opacity 専用で、
+          transform / filter は付けないこと（モバイル全画面メニューの fixed が壊れる）。 */}
+      <div className="hero-nav">
+        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+          <a href="#" className="z-50 flex items-center gap-3" aria-label="標 SHIRUBE">
+            <span
+              className={`block w-[36px] h-[40px] transition-colors duration-500 ${isMenuOpen ? 'bg-stone-900' : isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}
+              style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
+            ></span>
+            <span className={`text-base tracking-[0.2em] font-english opacity-60 transition-colors duration-500 ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>SHIRUBE</span>
+          </a>
 
-        {/* Desktop Menu */}
-        <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
+          {/* Desktop Menu */}
+          <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
+            {[
+              { ja: 'コンセプト', en: 'Concept', href: '#concept' },
+              { ja: '工程', en: 'Process', href: '#service' },
+              { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
+              { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
+            ].map((item, index) => (
+              <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
+                <span className="block text-base tracking-widest">{item.ja}</span>
+                <span className="block text-sm tracking-[0.2em] opacity-60 font-english">{item.en}</span>
+                <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50 p-2">
+            {isMenuOpen ? <X size={24} className="text-stone-900" /> : <Menu size={24} className={isScrolled ? "text-stone-800" : "text-stone-200"} />}
+          </button>
+        </div>
+
+        {/* Mobile Fullscreen Menu */}
+        <motion.div
+          initial={{ opacity: 0, y: "-100%" }}
+          animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? "0%" : "-100%" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
+        >
           {[
             { ja: 'コンセプト', en: 'Concept', href: '#concept' },
             { ja: '工程', en: 'Process', href: '#service' },
             { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
             { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
-            <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
-              <span className="block text-base tracking-widest">{item.ja}</span>
-              <span className="block text-sm tracking-[0.2em] opacity-60 font-english">{item.en}</span>
-              <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
+            <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
+              <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
+              <span className="block text-base tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
             </a>
           ))}
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50 p-2">
-          {isMenuOpen ? <X size={24} className="text-stone-900" /> : <Menu size={24} className={isScrolled ? "text-stone-800" : "text-stone-200"} />}
-        </button>
+        </motion.div>
       </div>
-
-      {/* Mobile Fullscreen Menu */}
-      <motion.div
-        initial={{ opacity: 0, y: "-100%" }}
-        animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? "0%" : "-100%" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
-      >
-        {[
-          { ja: 'コンセプト', en: 'Concept', href: '#concept' },
-          { ja: '工程', en: 'Process', href: '#service' },
-          { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
-          { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
-        ].map((item, index) => (
-          <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
-            <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
-            <span className="block text-base tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
-          </a>
-        ))}
-      </motion.div>
     </nav>
   );
 };
 
+// decode() が完了しなくてもこの時間で本文を出し、暗いまま放置される状態を作らない。
+const HERO_REVEAL_TIMEOUT_MS = 3000;
+
 const Hero = () => {
+  const imgRef = useRef(null);
+  // image: 画像+グラデーションのラッパー / text: heroテキストとScrollインジケータ
+  // source: 'image' = デコード完了起点 / 'fallback' = タイムアウト・取得失敗起点
+  const [reveal, setReveal] = useState({ image: false, text: false, source: 'image' });
+
+  useEffect(() => {
+    let cancelled = false;
+    let rafFirst = 0;
+    let rafSecond = 0;
+
+    // 初期の opacity: 0 を確実に1フレーム以上描画させてから状態を変える。
+    // キャッシュ済みで decode() が同期的に解決してもフェードが飛ばないようにするため。
+    const afterPaint = (update) => {
+      cancelAnimationFrame(rafFirst);
+      cancelAnimationFrame(rafSecond);
+      rafFirst = requestAnimationFrame(() => {
+        rafSecond = requestAnimationFrame(() => {
+          if (!cancelled) setReveal(update);
+        });
+      });
+    };
+
+    // 画像が間に合った場合。テキストが既に出ていれば画像だけを追って表示する。
+    const revealWithImage = () =>
+      afterPaint((prev) =>
+        prev.text ? { ...prev, image: true } : { image: true, text: true, source: 'image' }
+      );
+
+    // 画像を待てない場合。暗幕のままテキストとインジケータだけを出す。
+    const revealTextOnly = () =>
+      afterPaint((prev) => (prev.text ? prev : { ...prev, text: true, source: 'fallback' }));
+
+    const timeoutId = setTimeout(revealTextOnly, HERO_REVEAL_TIMEOUT_MS);
+
+    const img = imgRef.current;
+    if (!img) {
+      return () => {
+        cancelled = true;
+        clearTimeout(timeoutId);
+      };
+    }
+
+    // preload により React のマウント前に取得が終わっていることがある（img.complete === true）。
+    // その場合 decode() は即座に解決するが、上の afterPaint がフェードの起点を保証する。
+    // 取得に失敗していれば decode() は reject し、onError と同じ経路に入る。
+    img
+      .decode()
+      .then(() => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        revealWithImage();
+      })
+      .catch(() => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        revealTextOnly();
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(rafFirst);
+      cancelAnimationFrame(rafSecond);
+    };
+  }, []);
+
+  // ナビゲーションは Hero の外側（App 直下の兄弟）にあるため、同じ起点を
+  // :root の data 属性で共有する。値は Scroll インジケータと同一のタイミング。
+  useEffect(() => {
+    if (!reveal.text) return undefined;
+    const root = document.documentElement;
+    root.dataset.heroRevealed = 'true';
+    root.dataset.heroRevealSource = reveal.source;
+    return () => {
+      delete root.dataset.heroRevealed;
+      delete root.dataset.heroRevealSource;
+    };
+  }, [reveal.text, reveal.source]);
+
+  // 取得失敗時は暗幕のままテキストのみを出す。エラー表示や alt 文字列は露出させない。
+  const handleImageError = () => {
+    setReveal((prev) => (prev.text ? prev : { ...prev, image: false, text: true, source: 'fallback' }));
+  };
+
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-950">
+    <section
+      className="hero relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-950"
+      data-image-ready={reveal.image ? 'true' : 'false'}
+      data-text-ready={reveal.text ? 'true' : 'false'}
+      data-reveal-source={reveal.source}
+    >
       {/* Background Visual - The Watershed Mountain Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/hero.png"
-          alt="分水嶺の夜明け"
-          className="w-full h-full object-cover opacity-70"
-        />
+      <div className="hero-visual absolute inset-0 z-0">
+        <picture className="block w-full h-full">
+          <source
+            type="image/avif"
+            srcSet="/hero-768.avif 768w, /hero-1280.avif 1280w, /hero-1920.avif 1920w, /hero-2560.avif 2560w"
+            sizes="100vw"
+          />
+          <source
+            type="image/webp"
+            srcSet="/hero-768.webp 768w, /hero-1280.webp 1280w, /hero-1920.webp 1920w, /hero-2560.webp 2560w"
+            sizes="100vw"
+          />
+          <img
+            ref={imgRef}
+            src="/hero.png"
+            alt="分水嶺の夜明け"
+            fetchPriority="high"
+            decoding="async"
+            onError={handleImageError}
+            className="w-full h-full object-cover opacity-70"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-stone-900/50 to-[#FAFAF9]"></div>
       </div>
 
@@ -122,18 +234,18 @@ const Hero = () => {
         {/* Main Copy (Vertical Text) */}
         <div className="hero-vertical-text order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto md:pl-16">
           <div className="flex gap-4 md:gap-8 flex-row-reverse">
-            <FadeIn delay={0.2} className="vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
+            <div className="hero-text vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
               人生の岐路に、
-            </FadeIn>
-            <FadeIn delay={0.4} className="vertical-text text-4xl md:text-6xl font-serif text-stone-200 leading-loose whitespace-nowrap mt-16 md:mt-32 drop-shadow-md">
+            </div>
+            <div className="hero-text vertical-text text-4xl md:text-6xl font-serif text-stone-200 leading-loose whitespace-nowrap mt-16 md:mt-32 drop-shadow-md">
               一本の標を。
-            </FadeIn>
+            </div>
           </div>
         </div>
 
         {/* Sub Copy & English */}
         <div className="order-1 md:order-2 flex-1 flex flex-col items-center md:items-end text-center md:text-right space-y-6">
-          <FadeIn delay={0.6} direction="left">
+          <div className="hero-text">
             <h1 className="text-sm md:text-base tracking-[0.3em] text-stone-200 mb-4 drop-shadow-sm font-english">
               Private Documentary Service
             </h1>
@@ -144,19 +256,14 @@ const Hero = () => {
               今あなたが立っている、<br />
               その場所を映す。
             </p>
-          </FadeIn>
+          </div>
         </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
-      >
+      <div className="hero-scroll-cue absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20">
         <span className="text-xs tracking-widest text-stone-400 font-english">Scroll</span>
         <ChevronDown className="text-stone-400 animate-bounce" size={20} />
-      </motion.div>
+      </div>
     </section>
   );
 };
@@ -459,6 +566,7 @@ const VoiceCard = ({ voice, onClick }) => (
       src={voice.image}
       alt=""
       loading="lazy"
+      decoding="async"
       className="absolute inset-0 w-full h-full object-cover"
     />
     <div className="absolute inset-0 bg-black/50 group-hover:bg-black/25 transition-colors duration-300" />

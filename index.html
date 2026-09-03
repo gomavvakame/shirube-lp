@@ -44,6 +44,17 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512.png" />
 
+  <!-- hero 画像の先読み（SPA のため JS 評価を待たずに取得を開始させる） -->
+  <link
+    rel="preload"
+    as="image"
+    type="image/avif"
+    href="/hero-1280.avif"
+    imagesrcset="/hero-768.avif 768w, /hero-1280.avif 1280w, /hero-1920.avif 1920w, /hero-2560.avif 2560w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <!-- Font preconnect & load -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,6 +82,18 @@
       "url": "https://shirube.yakumo-todo.com/"
     }
     </script>
+
+  <style>
+    /* JSバンドル評価前（#rootが空）の初期描画をheroの暗幕と同色にする。
+       Reactマウント後は:emptyがマッチしなくなり自動的に無効化される。
+       色はheroのbg-stone-950と同値。変更・削除しないこと。 */
+    #root:empty {
+      position: fixed;
+      inset: 0;
+      background-color: #0c0a09;
+    }
+  </style>
+
 </head>
 
 <body>
