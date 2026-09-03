@@ -48,8 +48,35 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // メニュー展開中は背後のページを固定する。overflow: hidden はユーザー操作の
+  // スクロールだけを止め、プログラム／フラグメント経由のスクロールは通すため、
+  // スクロール位置は保存も復元もせずそのまま保たれ、メニュー内のページ内リンク
+  // (#concept 等) もそのまま機能する。
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const html = document.documentElement;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+
+    html.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      html.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, [isMenuOpen]);
+
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'py-4' : 'py-8'}`}>
+      {/* 背景・blur・影を持つ層。これらを <nav> 自身に付けると backdrop-filter が
+          fixed の包含ブロックとなり、モバイル全画面メニューの inset-0 が nav の
+          矩形を基準に解決されて帯の高さまで潰れる。必ずこの子要素側に置くこと。 */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}
+      />
       {/* hero のフェードに合わせて現れるためのラッパー。opacity 専用で、
           transform / filter は付けないこと（モバイル全画面メニューの fixed が壊れる）。 */}
       <div className="hero-nav">
