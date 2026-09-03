@@ -12,6 +12,9 @@ html {
   --hero-text-fade-duration: 800ms;
   --hero-scroll-delay: 1800ms;
   --hero-scroll-fade-duration: 600ms;
+  --hero-nav-delay: 1800ms;
+  --hero-nav-fade-duration: 600ms;
+  --hero-nav-failsafe-delay: 5000ms;
 }
 
 /* 到達時は bg-stone-950 の暗幕のみが見えている状態から始める。
@@ -64,5 +67,42 @@ html {
   .hero-scroll-cue {
     transition: none !important;
     transition-delay: 0ms !important;
+  }
+}
+
+/* ナビゲーションは移動手段であり、場と言葉が立ち上がった後に現れる。
+   起点は画像フェード開始（Scrollインジケータと同一）。
+   このクラスは opacity と transition だけを持ち、<nav> 自身の
+   position / z-index / transition-all には一切触れないこと。 */
+.hero-nav {
+  opacity: 0;
+  transition: opacity var(--hero-nav-fade-duration) ease-out;
+  transition-delay: var(--hero-nav-delay);
+  /* JSが途中で停止してもページからの移動手段が失われないための保険。
+     通常経路では先にトランジションが opacity: 1 に到達しているため見た目は変わらない。 */
+  animation: hero-nav-failsafe 0s linear var(--hero-nav-failsafe-delay) forwards;
+}
+
+@keyframes hero-nav-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+:root[data-hero-revealed='true'] .hero-nav {
+  opacity: 1;
+}
+
+/* 画像を待てなかった場合はテキスト・インジケータと同じ分だけ繰り上げる。 */
+:root[data-hero-reveal-source='fallback'] .hero-nav {
+  transition-delay: calc(var(--hero-nav-delay) - var(--hero-text-delay));
+}
+
+/* 動きを抑制する設定では保険の待ち時間も作らず、遷移なしで表示する。 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-nav {
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
   }
 }

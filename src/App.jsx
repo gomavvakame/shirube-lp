@@ -50,56 +50,60 @@ const Navigation = () => {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-[#FAFAF9]/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
-      <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className="z-50 flex items-center gap-3" aria-label="標 SHIRUBE">
-          <span
-            className={`block w-[36px] h-[40px] transition-colors duration-500 ${isMenuOpen ? 'bg-stone-900' : isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}
-            style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
-          ></span>
-          <span className={`text-base tracking-[0.2em] font-english opacity-60 transition-colors duration-500 ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>SHIRUBE</span>
-        </a>
+      {/* hero のフェードに合わせて現れるためのラッパー。opacity 専用で、
+          transform / filter は付けないこと（モバイル全画面メニューの fixed が壊れる）。 */}
+      <div className="hero-nav">
+        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+          <a href="#" className="z-50 flex items-center gap-3" aria-label="標 SHIRUBE">
+            <span
+              className={`block w-[36px] h-[40px] transition-colors duration-500 ${isMenuOpen ? 'bg-stone-900' : isScrolled ? 'bg-stone-900' : 'bg-stone-200'}`}
+              style={{ maskImage: 'url(/shirube-logo.svg)', maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskImage: 'url(/shirube-logo.svg)', WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center' }}
+            ></span>
+            <span className={`text-base tracking-[0.2em] font-english opacity-60 transition-colors duration-500 ${isMenuOpen ? 'text-stone-900' : isScrolled ? 'text-stone-900' : 'text-stone-200'}`}>SHIRUBE</span>
+          </a>
 
-        {/* Desktop Menu */}
-        <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
+          {/* Desktop Menu */}
+          <div className={`hidden md:flex space-x-10 ${isScrolled ? 'text-stone-600' : 'text-stone-300'}`}>
+            {[
+              { ja: 'コンセプト', en: 'Concept', href: '#concept' },
+              { ja: '工程', en: 'Process', href: '#service' },
+              { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
+              { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
+            ].map((item, index) => (
+              <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
+                <span className="block text-base tracking-widest">{item.ja}</span>
+                <span className="block text-sm tracking-[0.2em] opacity-60 font-english">{item.en}</span>
+                <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50 p-2">
+            {isMenuOpen ? <X size={24} className="text-stone-900" /> : <Menu size={24} className={isScrolled ? "text-stone-800" : "text-stone-200"} />}
+          </button>
+        </div>
+
+        {/* Mobile Fullscreen Menu */}
+        <motion.div
+          initial={{ opacity: 0, y: "-100%" }}
+          animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? "0%" : "-100%" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
+        >
           {[
             { ja: 'コンセプト', en: 'Concept', href: '#concept' },
             { ja: '工程', en: 'Process', href: '#service' },
             { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
             { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
           ].map((item, index) => (
-            <a key={index} href={item.href} className={`transition-colors relative group text-center ${isScrolled ? 'hover:text-stone-900' : 'hover:text-white'}`}>
-              <span className="block text-base tracking-widest">{item.ja}</span>
-              <span className="block text-sm tracking-[0.2em] opacity-60 font-english">{item.en}</span>
-              <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all group-hover:w-full ${isScrolled ? 'bg-stone-900' : 'bg-white'}`}></span>
+            <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
+              <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
+              <span className="block text-base tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
             </a>
           ))}
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50 p-2">
-          {isMenuOpen ? <X size={24} className="text-stone-900" /> : <Menu size={24} className={isScrolled ? "text-stone-800" : "text-stone-200"} />}
-        </button>
+        </motion.div>
       </div>
-
-      {/* Mobile Fullscreen Menu */}
-      <motion.div
-        initial={{ opacity: 0, y: "-100%" }}
-        animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? "0%" : "-100%" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 bg-[#FAFAF9] z-40 flex flex-col items-center justify-center space-y-8"
-      >
-        {[
-          { ja: 'コンセプト', en: 'Concept', href: '#concept' },
-          { ja: '工程', en: 'Process', href: '#service' },
-          { ja: 'フィロソフィー', en: 'Philosophy', href: '#philosophy' },
-          { ja: 'お問い合わせ', en: 'Contact', href: '#contact' },
-        ].map((item, index) => (
-          <a key={index} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-center">
-            <span className="block text-2xl font-serif tracking-widest text-stone-800">{item.ja}</span>
-            <span className="block text-base tracking-[0.2em] text-stone-400 font-english">{item.en}</span>
-          </a>
-        ))}
-      </motion.div>
     </nav>
   );
 };
@@ -173,6 +177,19 @@ const Hero = () => {
       cancelAnimationFrame(rafSecond);
     };
   }, []);
+
+  // ナビゲーションは Hero の外側（App 直下の兄弟）にあるため、同じ起点を
+  // :root の data 属性で共有する。値は Scroll インジケータと同一のタイミング。
+  useEffect(() => {
+    if (!reveal.text) return undefined;
+    const root = document.documentElement;
+    root.dataset.heroRevealed = 'true';
+    root.dataset.heroRevealSource = reveal.source;
+    return () => {
+      delete root.dataset.heroRevealed;
+      delete root.dataset.heroRevealSource;
+    };
+  }, [reveal.text, reveal.source]);
 
   // 取得失敗時は暗幕のままテキストのみを出す。エラー表示や alt 文字列は露出させない。
   const handleImageError = () => {
