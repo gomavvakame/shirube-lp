@@ -3,3 +3,66 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* hero のフェード演出のタイミング値。ここが唯一の定義箇所。
+   JSX にはハードコードせず、遷移はすべてこの変数を参照する。 */
+:root {
+  --hero-image-fade-duration: 2000ms;
+  --hero-text-delay: 1000ms;
+  --hero-text-fade-duration: 800ms;
+  --hero-scroll-delay: 1800ms;
+  --hero-scroll-fade-duration: 600ms;
+}
+
+/* 到達時は bg-stone-950 の暗幕のみが見えている状態から始める。
+   画像とグラデーションは1つのラッパー(.hero-visual)にまとめ、
+   ラッパーの不透明度だけで制御する（内側の img は opacity-70 の静的値を保持）。 */
+.hero-visual,
+.hero-text,
+.hero-scroll-cue {
+  opacity: 0;
+}
+
+.hero-visual {
+  transition: opacity var(--hero-image-fade-duration) ease-out;
+}
+
+.hero-text {
+  transition: opacity var(--hero-text-fade-duration) ease-out;
+  transition-delay: var(--hero-text-delay);
+}
+
+.hero-scroll-cue {
+  transition: opacity var(--hero-scroll-fade-duration) ease-out;
+  transition-delay: var(--hero-scroll-delay);
+}
+
+.hero[data-image-ready='true'] .hero-visual {
+  opacity: 1;
+}
+
+.hero[data-text-ready='true'] .hero-text,
+.hero[data-text-ready='true'] .hero-scroll-cue {
+  opacity: 1;
+}
+
+/* 画像を待てなかった場合（3秒タイムアウト／取得失敗）は、
+   画像フェード開始を基準にした待ち時間が意味を持たないため、テキスト起点に繰り上げる。 */
+.hero[data-reveal-source='fallback'] .hero-text {
+  transition-delay: 0ms;
+}
+
+.hero[data-reveal-source='fallback'] .hero-scroll-cue {
+  transition-delay: calc(var(--hero-scroll-delay) - var(--hero-text-delay));
+}
+
+/* 動きを抑制する設定では遷移を無効化し、判定完了時点で即座に表示する。
+   上の data 属性付きルールより詳細度が低いため !important で確実に打ち消す。 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual,
+  .hero-text,
+  .hero-scroll-cue {
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
+}

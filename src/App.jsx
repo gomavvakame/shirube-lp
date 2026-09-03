@@ -104,16 +104,111 @@ const Navigation = () => {
   );
 };
 
+// decode() が完了しなくてもこの時間で本文を出し、暗いまま放置される状態を作らない。
+const HERO_REVEAL_TIMEOUT_MS = 3000;
+
 const Hero = () => {
+  const imgRef = useRef(null);
+  // image: 画像+グラデーションのラッパー / text: heroテキストとScrollインジケータ
+  // source: 'image' = デコード完了起点 / 'fallback' = タイムアウト・取得失敗起点
+  const [reveal, setReveal] = useState({ image: false, text: false, source: 'image' });
+
+  useEffect(() => {
+    let cancelled = false;
+    let rafFirst = 0;
+    let rafSecond = 0;
+
+    // 初期の opacity: 0 を確実に1フレーム以上描画させてから状態を変える。
+    // キャッシュ済みで decode() が同期的に解決してもフェードが飛ばないようにするため。
+    const afterPaint = (update) => {
+      cancelAnimationFrame(rafFirst);
+      cancelAnimationFrame(rafSecond);
+      rafFirst = requestAnimationFrame(() => {
+        rafSecond = requestAnimationFrame(() => {
+          if (!cancelled) setReveal(update);
+        });
+      });
+    };
+
+    // 画像が間に合った場合。テキストが既に出ていれば画像だけを追って表示する。
+    const revealWithImage = () =>
+      afterPaint((prev) =>
+        prev.text ? { ...prev, image: true } : { image: true, text: true, source: 'image' }
+      );
+
+    // 画像を待てない場合。暗幕のままテキストとインジケータだけを出す。
+    const revealTextOnly = () =>
+      afterPaint((prev) => (prev.text ? prev : { ...prev, text: true, source: 'fallback' }));
+
+    const timeoutId = setTimeout(revealTextOnly, HERO_REVEAL_TIMEOUT_MS);
+
+    const img = imgRef.current;
+    if (!img) {
+      return () => {
+        cancelled = true;
+        clearTimeout(timeoutId);
+      };
+    }
+
+    // preload により React のマウント前に取得が終わっていることがある（img.complete === true）。
+    // その場合 decode() は即座に解決するが、上の afterPaint がフェードの起点を保証する。
+    // 取得に失敗していれば decode() は reject し、onError と同じ経路に入る。
+    img
+      .decode()
+      .then(() => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        revealWithImage();
+      })
+      .catch(() => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        revealTextOnly();
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(rafFirst);
+      cancelAnimationFrame(rafSecond);
+    };
+  }, []);
+
+  // 取得失敗時は暗幕のままテキストのみを出す。エラー表示や alt 文字列は露出させない。
+  const handleImageError = () => {
+    setReveal((prev) => (prev.text ? prev : { ...prev, image: false, text: true, source: 'fallback' }));
+  };
+
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-950">
+    <section
+      className="hero relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-950"
+      data-image-ready={reveal.image ? 'true' : 'false'}
+      data-text-ready={reveal.text ? 'true' : 'false'}
+      data-reveal-source={reveal.source}
+    >
       {/* Background Visual - The Watershed Mountain Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/hero.png"
-          alt="分水嶺の夜明け"
-          className="w-full h-full object-cover opacity-70"
-        />
+      <div className="hero-visual absolute inset-0 z-0">
+        <picture className="block w-full h-full">
+          <source
+            type="image/avif"
+            srcSet="/hero-768.avif 768w, /hero-1280.avif 1280w, /hero-1920.avif 1920w, /hero-2560.avif 2560w"
+            sizes="100vw"
+          />
+          <source
+            type="image/webp"
+            srcSet="/hero-768.webp 768w, /hero-1280.webp 1280w, /hero-1920.webp 1920w, /hero-2560.webp 2560w"
+            sizes="100vw"
+          />
+          <img
+            ref={imgRef}
+            src="/hero.png"
+            alt="分水嶺の夜明け"
+            fetchPriority="high"
+            decoding="async"
+            onError={handleImageError}
+            className="w-full h-full object-cover opacity-70"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-stone-900/50 to-[#FAFAF9]"></div>
       </div>
 
@@ -122,18 +217,18 @@ const Hero = () => {
         {/* Main Copy (Vertical Text) */}
         <div className="hero-vertical-text order-2 md:order-1 flex-1 flex justify-center md:justify-start mt-12 md:mt-0 min-h-[50vh] md:h-auto md:pl-16">
           <div className="flex gap-4 md:gap-8 flex-row-reverse">
-            <FadeIn delay={0.2} className="vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
+            <div className="hero-text vertical-text text-4xl md:text-6xl font-serif text-stone-100 leading-loose whitespace-nowrap drop-shadow-md">
               人生の岐路に、
-            </FadeIn>
-            <FadeIn delay={0.4} className="vertical-text text-4xl md:text-6xl font-serif text-stone-200 leading-loose whitespace-nowrap mt-16 md:mt-32 drop-shadow-md">
+            </div>
+            <div className="hero-text vertical-text text-4xl md:text-6xl font-serif text-stone-200 leading-loose whitespace-nowrap mt-16 md:mt-32 drop-shadow-md">
               一本の標を。
-            </FadeIn>
+            </div>
           </div>
         </div>
 
         {/* Sub Copy & English */}
         <div className="order-1 md:order-2 flex-1 flex flex-col items-center md:items-end text-center md:text-right space-y-6">
-          <FadeIn delay={0.6} direction="left">
+          <div className="hero-text">
             <h1 className="text-sm md:text-base tracking-[0.3em] text-stone-200 mb-4 drop-shadow-sm font-english">
               Private Documentary Service
             </h1>
@@ -144,19 +239,14 @@ const Hero = () => {
               今あなたが立っている、<br />
               その場所を映す。
             </p>
-          </FadeIn>
+          </div>
         </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
-      >
+      <div className="hero-scroll-cue absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20">
         <span className="text-xs tracking-widest text-stone-400 font-english">Scroll</span>
         <ChevronDown className="text-stone-400 animate-bounce" size={20} />
-      </motion.div>
+      </div>
     </section>
   );
 };
@@ -459,6 +549,7 @@ const VoiceCard = ({ voice, onClick }) => (
       src={voice.image}
       alt=""
       loading="lazy"
+      decoding="async"
       className="absolute inset-0 w-full h-full object-cover"
     />
     <div className="absolute inset-0 bg-black/50 group-hover:bg-black/25 transition-colors duration-300" />
