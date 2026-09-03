@@ -161,8 +161,8 @@
 .shirube-exp-lead {
   font-family: 'Noto Serif JP', serif;
   font-weight: 300;
-  font-size: 1.375rem;
-  color: #d4c8bc;
+  font-size: 2rem;
+  color: #78716c;
   letter-spacing: 0.08em;
   line-height: 1.8;
   text-align: center;
@@ -251,7 +251,7 @@
   }
 
   .shirube-exp-lead {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
   }
 
   .shirube-exp-trigger-wrap {
